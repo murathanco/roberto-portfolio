@@ -1,0 +1,25 @@
+{
+  "site": {
+    "name": "Roberto Gonzalez Sosa",
+    "tagline": "Your Sharp Associate",
+    "city": "Toronto, ON",
+    "email": "robertogonzalezsosa@gmail.com",
+    "instagram": "roberto_gs",
+    "studioName": "MACEL Studios",
+    "studioAddress": "658 Queen St W, Toronto, ON M6J 1E5"
+  },
+  "info": {
+    "leads": [
+      "¡Hola!",
+      "ROBERTO.GS is my creative practice.",
+      "Heartily living through making stuff."
+    ],
+    "where": "Peacefully residing in Toronto, ON. Working out of MACEL Studios at",
+    "reach": "Reachable through",
+    "footer": [
+      "Website brought to life by Murathan Biliktu",
+      "Written in ABC Areal",
+      "2026 (tm)"
+    ]
+  }
+}

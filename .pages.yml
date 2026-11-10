@@ -1,0 +1,170 @@
+# Pages CMS should open the content branch, not main.
+# The site reads that branch live, so a code push cannot roll these pages back.
+media:
+  input: public/work
+  output: /work
+  categories: [image]
+  rename: safe
+
+settings:
+  content:
+    merge: true
+  commit:
+    identity: app
+    templates:
+      create: "Update {path} (via Pages CMS)"
+      update: "Update {path} (via Pages CMS)"
+      delete: "Update {path} (via Pages CMS)"
+      rename: "Rename {oldPath} to {newPath} (via Pages CMS)"
+
+content:
+  - name: site
+    label: Site
+    type: group
+    items:
+      - name: info
+        label: Info page
+        type: file
+        path: content/info.json
+        format: json
+        operations:
+          delete: false
+        fields:
+          - name: site
+            label: Name and contact
+            type: object
+            fields:
+              - name: name
+                label: Name
+                type: string
+                required: true
+              - name: tagline
+                label: Tagline
+                type: string
+              - name: city
+                label: City
+                type: string
+                description: Shown on the place button.
+              - name: email
+                label: Email
+                type: string
+              - name: instagram
+                label: Instagram
+                type: string
+                description: The handle, without the @.
+              - name: studioName
+                label: Studio name
+                type: string
+              - name: studioAddress
+                label: Studio address
+                type: string
+          - name: info
+            label: Info page
+            type: object
+            fields:
+              - name: leads
+                label: Opening lines
+                type: text
+                list: true
+              - name: where
+                label: Line above the studio
+                type: text
+              - name: reach
+                label: Line above the email
+                type: string
+              - name: footer
+                label: Footer lines
+                type: string
+                list: true
+      - name: works
+        label: Works
+        type: collection
+        path: content/works
+        format: json
+        filename:
+          template: "{fields.slug}.json"
+          field: create
+        view:
+          primary: title
+          fields: [title, year, client]
+          sort: [order, title]
+          search: [title, client, year, place]
+          default:
+            sort: order
+            order: asc
+        fields:
+          - name: title
+            label: Title
+            type: string
+            required: true
+          - name: slug
+            label: Link
+            type: string
+            required: true
+            pattern:
+              regex: "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+              message: Use lowercase words separated by dashes, like dress-loud.
+            description: This is the address of the work, like #/dress-loud.
+          - name: order
+            label: Position
+            type: number
+            description: Lower numbers show first.
+          - name: hidden
+            label: Hide on the site
+            type: boolean
+          - name: color
+            label: Color
+            type: select
+            options:
+              values:
+                - { name: lilac, label: Lilac }
+                - { name: mint, label: Mint }
+                - { name: tomato, label: Tomato }
+                - { name: peach, label: Peach }
+                - { name: sky, label: Sky }
+                - { name: pink, label: Pink }
+          - name: year
+            label: Year
+            type: string
+          - name: client
+            label: Client
+            type: string
+          - name: place
+            label: Place
+            type: string
+          - name: disciplines
+            label: Disciplines
+            type: string
+          - name: text
+            label: Paragraphs
+            type: text
+            list: true
+          - name: slides
+            label: Slides
+            type: object
+            list:
+              collapsible:
+                collapsed: true
+                summary: "{caption}{placeholder}"
+            fields:
+              - name: src
+                label: Image
+                type: image
+              - name: alt
+                label: Description
+                type: string
+                description: What the image shows, for someone who cannot see it.
+              - name: caption
+                label: Caption
+                type: string
+              - name: placeholder
+                label: Coming soon label
+                type: string
+                description: Used when this slide has no image yet.
+              - name: w
+                label: Width
+                type: number
+                description: In pixels. Leave blank for a 4:5 frame.
+              - name: h
+                label: Height
+                type: number
