@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#eef1f4" />
+    <title>Roberto Gonzalez Sosa</title>
+    <meta name="description" content="Selected work by Roberto Gonzalez Sosa — brand design, editorial, illustration and photography in Toronto." />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/src/select/style.css" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+
+    <header class="top">
+      <a class="brand" href="#top">Roberto Gonzalez Sosa</a>
+      <nav class="nav" aria-label="Page">
+        <a href="#work">Work</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section class="hero" id="top" aria-label="Introduction">
+        <p class="hero__mark">ROBERTO.GS</p>
+        <h1 class="hero__name">Roberto Gonzalez Sosa</h1>
+        <p class="hero__lead">Brand design, editorial, illustration and photography.</p>
+        <p class="hero__place">Toronto, ON</p>
+      </section>
+
+      <section class="work" id="work" aria-label="Selected work">
+        <header class="section__head">
+          <h2>Selected work</h2>
+          <p>A focused view of recent projects.</p>
+        </header>
+        <div class="work__list" id="work-list"></div>
+      </section>
+
+      <section class="about" id="about" aria-label="About">
+        <header class="section__head">
+          <h2>About</h2>
+        </header>
+        <div class="about__copy">
+          <p>ROBERTO.GS is the creative practice of Roberto Gonzalez Sosa. Work spans brand systems, editorial design, illustration and photography — made with care, clarity and a sharp eye for tone.</p>
+          <p>Based in Toronto, working out of MACEL Studios on Queen Street West.</p>
+        </div>
+      </section>
+
+      <section class="contact" id="contact" aria-label="Contact">
+        <header class="section__head">
+          <h2>Contact</h2>
+          <p>Available for new collaborations.</p>
+        </header>
+        <ul class="contact__list" id="contact-list"></ul>
+      </section>
+    </main>
+
+    <footer class="foot">
+      <p>© <span id="year"></span> Roberto Gonzalez Sosa</p>
+    </footer>
+
+    <div class="viewer" id="viewer" role="dialog" aria-modal="true" aria-label="Image viewer" hidden>
+      <button class="viewer__close" type="button" id="viewer-close" aria-label="Close">Close</button>
+      <button class="viewer__nav viewer__nav--prev" type="button" id="viewer-prev" aria-label="Previous image">←</button>
+      <figure class="viewer__frame">
+        <img id="viewer-img" alt="" />
+        <figcaption id="viewer-cap"></figcaption>
+      </figure>
+      <button class="viewer__nav viewer__nav--next" type="button" id="viewer-next" aria-label="Next image">→</button>
+    </div>
+
+    <script type="module" src="/src/select/main.js"></script>
+  </body>
+</html>

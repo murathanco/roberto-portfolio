@@ -1,0 +1,245 @@
+/* How far a note is off the surface. 0 is stuck down flat; it drives the shadow. */
+@property --lift { syntax: '<number>'; inherits: true; initial-value: 0; }
+@property --hov { syntax: '<number>'; inherits: true; initial-value: 0; }
+
+/* ---------- sticky notes ---------- */
+
+/* Nanum Pen Script (OFL): felt-tip handwriting that reads like a real sticky note. */
+@font-face {
+  font-family: 'Nanum Pen Script';
+  src: url('/fonts/NanumPenScript.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* One yellow, the same butter as the rest of the site. The shadow is what says it is sitting on the page. */
+.paper {
+  --l: calc(var(--lift) + var(--hov) * .45);
+  position: relative; color: var(--ink);
+  background: var(--paper, var(--butter));
+  box-shadow:
+    inset 0 0 0 1px rgb(16 16 18 / .08),
+    0 1px 0 rgb(16 16 18 / .05),
+    0 calc(5px + var(--l) * 8px) calc(12px + var(--l) * 16px) rgb(16 16 18 / calc(.08 + var(--l) * .04));
+}
+
+/* ---------- the surface: the right side, where the notes get stuck ---------- */
+
+.slips { position: fixed; inset: 0 0 0 var(--stage); z-index: 20; overflow: clip; pointer-events: none; }
+/* A classic Post-it is 3in square. Stay at that size, and only shrink when the screen is narrower than the note. */
+.slip { --w: min(3in, 78vw); position: absolute; left: 0; top: 0; pointer-events: auto; touch-action: none; user-select: none; -webkit-user-select: none; will-change: transform; transition: --hov .35s var(--ease); }
+.slip img { pointer-events: none; }
+.slip__paper {
+  display: flex; flex-direction: column; gap: 10px; width: var(--w); aspect-ratio: 1; padding: 22px 22px 20px;
+  text-decoration: none; transform: translateY(calc(var(--hov) * -3px)); transition: transform .35s var(--ease);
+}
+a.slip__paper:focus-visible { outline-offset: 3px; }
+@media (hover: hover) { .slip:hover { --hov: 1; } }
+.slip.is-held { --hov: 1.5; }
+
+.slip__k,
+.slip__v {
+  font-family: 'Nanum Pen Script', 'Segoe Print', 'Bradley Hand', cursive;
+  font-weight: 400;
+  font-synthesis: none;
+  letter-spacing: normal;
+  text-transform: lowercase;
+}
+.slip__k { display: block; font-size: 20px; line-height: 1.15; color: var(--ink); }
+.slip__v { display: block; margin: 0; font-size: 26px; line-height: 1.2; text-wrap: pretty; }
+
+/* ---------- the flag that replaces the cursor over the monogram ---------- */
+
+.stage__logo.is-flag, .stage__logo.is-flag canvas { cursor: none; }
+.flagcursor { position: fixed; left: 0; top: 0; z-index: 60; pointer-events: none; transform: translate3d(-100px, -100px, 0); }
+.flagcursor__in {
+  margin: -2px 0 0 -2px; transform-origin: 2px 2px; transform: scale(.72) rotate(-14deg); opacity: 0;
+  transition: transform .1s cubic-bezier(.2, .8, .2, 1), opacity .05s linear;
+}
+.flagcursor.is-on .flagcursor__in { transform: none; opacity: 1; }
+.flagcursor__shake { transform-origin: 2px 2px; animation: shake .3s ease-in-out infinite alternate; }
+.flagcursor svg { display: block; overflow: visible; }
+@keyframes shake {
+  from { transform: rotate(-11deg) translate(-1px, 1px); }
+  to { transform: rotate(9deg) translate(1px, -1px); }
+}
+
+/* ---------- the question: a Windows 95 message box. Bevels and font from 98.css (MIT), title bar in 95's flat navy. ---------- */
+
+@font-face { font-family: 'Pixelated MS Sans Serif'; src: url('/fonts/ms_sans_serif.woff2') format('woff2'); font-weight: 400; }
+@font-face { font-family: 'Pixelated MS Sans Serif'; src: url('/fonts/ms_sans_serif_bold.woff2') format('woff2'); font-weight: 700; }
+
+.ask { padding: 0; border: 0; background: none; overflow: visible; max-width: none; max-height: none; }
+.ask::backdrop { background: none; }
+/* drawn at Windows' own pixel size, then doubled whole on big screens so the pixels stay square */
+@media (min-width: 720px) { .ask { zoom: 2; } }
+/* A phone gets a quarter more: not whole pixels, but Yes and No stay big enough for a thumb, and it still fits. */
+@media (min-width: 360px) and (max-width: 719px) { .ask { zoom: 1.25; } }
+
+.w95 {
+  --frame: #0a0a0a; --light: #dfdfdf; --hi: #fff; --shadow: #808080;
+  min-width: 280px; padding: 3px; background: #c0c0c0; color: #000;
+  font: 400 11px/13px 'Pixelated MS Sans Serif', Arial, sans-serif; letter-spacing: 0;
+  -webkit-font-smoothing: none; font-smooth: never;
+  box-shadow: inset -1px -1px var(--frame), inset 1px 1px var(--light), inset -2px -2px var(--shadow), inset 2px 2px var(--hi);
+}
+.w95__title { display: flex; justify-content: space-between; align-items: center; height: 18px; padding: 0 2px 0 3px; background: #000080; color: #fff; font-weight: 700; }
+.w95__x {
+  width: 16px; height: 14px; padding: 0;
+  background: #c0c0c0 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='7'%3E%3Cpath d='M0 0h2v1h1v1h2V1h1V0h2v1H7v1H6v1H5v1h1v1h1v1h1v1H6V6H5V5H3v1H2v1H0V6h1V5h1V4h1V3H2V2H1V1H0z'/%3E%3C/svg%3E") no-repeat 4px 3px;
+  box-shadow: inset -1px -1px var(--frame), inset 1px 1px var(--hi), inset -2px -2px var(--shadow), inset 2px 2px var(--light);
+}
+.w95__x:active { background-position: 5px 4px; box-shadow: inset -1px -1px var(--hi), inset 1px 1px var(--frame), inset -2px -2px var(--light), inset 2px 2px var(--shadow); }
+.w95__body { display: flex; align-items: center; gap: 16px; padding: 14px 18px 16px 12px; }
+.w95__icon { flex: none; }
+.w95__msg { margin: 0; white-space: nowrap; }
+.w95__btns { display: flex; justify-content: center; gap: 6px; padding: 0 12px 10px; }
+.w95__btns[hidden] { display: none; }
+.w95__btn {
+  min-width: 75px; height: 23px; padding: 0 12px; background: #c0c0c0; color: #000; text-align: center;
+  box-shadow: inset -1px -1px var(--frame), inset 1px 1px var(--hi), inset -2px -2px var(--shadow), inset 2px 2px var(--light);
+}
+.w95__btn--default { box-shadow: inset -2px -2px var(--frame), inset 1px 1px var(--frame), inset 2px 2px var(--hi), inset -3px -3px var(--shadow), inset 3px 3px var(--light); }
+.w95__btn:active { padding: 1px 11px 0 13px; box-shadow: inset -1px -1px var(--hi), inset 1px 1px var(--frame), inset -2px -2px var(--light), inset 2px 2px var(--shadow); }
+.w95__btn--default:active { box-shadow: inset 2px 2px var(--frame), inset -1px -1px var(--frame), inset -2px -2px var(--hi), inset 3px 3px var(--shadow), inset -3px -3px var(--light); }
+.w95 button:focus, .w95 button:focus-visible { outline: 1px dotted #000; outline-offset: -4px; }
+.w95__x:focus, .w95__x:focus-visible { outline: 0; }
+
+/* ---------- the Mexican side: the same site, mirrored ---------- */
+
+@media (min-width: 901px) {
+  .is-es .stage { inset: 0 0 0 auto; }
+  .is-es .panel { margin-left: 0; margin-right: var(--stage); padding: 20px 0 20px 20px; }
+  .is-es .edges { left: 0; right: var(--stage); }
+  .is-es .edges__top, .is-es .edges__foot { flex-direction: row-reverse; }
+  .is-es .edges__side { right: auto; left: 0; align-items: flex-start; }
+  .is-es .edges__side .edgebox { align-items: flex-start; }
+  .is-es body:has(.edges__side .edge[aria-current]) .panel { padding-left: 40px; padding-right: 0; }
+  .is-es .slips { inset: 0 var(--stage) 0 0; }
+  .is-es .piece { right: auto; left: 0; }
+}
+/* On a phone the monogram's side is the band at the top. The notes land below it, and the mirror swaps its two halves. */
+@media (max-width: 900px) {
+  .slips { top: var(--deck); }
+  .is-es .stage { grid-template-columns: auto minmax(0, 1fr); }
+  .is-es .stage .stage__logo { grid-column: 1; margin: 0 0 0 6px; }
+  .is-es .stage .stage__foot { grid-column: 2; flex-direction: column; align-items: flex-end; padding: 0 var(--pad) 0 0; }
+  .is-es body:has(.is-game) .stage__logo { grid-column: 1 / -1; margin: 0; }
+  .is-es body:has(.is-game) .stage__foot { grid-column: 1 / -1; flex-direction: row-reverse; padding: 10px var(--pad) 12px; }
+}
+.is-es .piece:not(.is-on) { justify-content: flex-end; text-align: right; }
+.is-es .tabs, .is-es .stage__foot, .is-es .project__bar, .is-es .facts, .is-es .next { flex-direction: row-reverse; }
+.is-es .name, .is-es .project h2, .is-es .project__text, .is-es .entry__title, .is-es .entry__facts, .is-es .entry__copy { text-align: right; }
+.is-es .project__text { margin-left: auto; }
+.is-es .entry__bar { grid-template-columns: auto minmax(0, 1fr); }
+.is-es .entry__title,
+.is-es .entry__facts { grid-column: 2; }
+.is-es .entry__facts { justify-content: flex-end; }
+.is-es .entry__open { grid-column: 1; margin: 0; justify-self: start; }
+.is-es .project > .key { display: flex; width: max-content; margin: var(--gap) var(--gap) 0 auto; }
+.is-es .next strong { text-align: left; }
+.is-es :is(.row, .next, .project > .key) .arr { display: inline-block; scale: -1 1; }
+.is-es a.row:is(:hover, :focus-visible) .arr { transform: translateX(-6px); }
+.is-es .next:is(:hover, :focus-visible) .arr { transform: translateX(-.15em); }
+.is-es .info { margin-left: auto; }
+.is-es .info__head, .is-es .info__lead, .is-es .info__where, .is-es .info__reach, .is-es .info__foot { text-align: right; }
+.is-es .info__row { direction: rtl; }
+.is-es .info__row > * { direction: ltr; text-align: right; }
+.is-es .info__row .arr { display: inline-block; scale: -1 1; }
+.is-es .row, .is-es .spec div { direction: rtl; }
+.is-es .row > *, .is-es .spec div > * { direction: ltr; text-align: right; }
+.is-es .stage__logo.is-flat { position: relative; }
+.is-es .stage__logo.is-flat::before { content: '~'; position: absolute; top: 4%; left: 0; right: 0; text-align: center; font: 500 120px/1 var(--sans); }
+
+/* Turning the page over. Both faces share one timeline, so the hinge is a
+   sliver instead of a pause: the leaving face accelerates into the edge, the
+   arriving face eases out of it and settles flat. It draws in a little as it
+   turns, just enough to stay inside the frame, and the light falls off the
+   face that is turning away. A whole page should not bounce. */
+::view-transition { background: var(--mist); }
+html[data-flip]::view-transition-group(root) { animation-duration: .96s; }
+html[data-flip]::view-transition-old(root),
+html[data-flip]::view-transition-new(root) {
+  mix-blend-mode: normal;
+  backface-visibility: hidden;
+  transform-origin: 50% 50%;
+  box-shadow: 0 26px 40px rgb(16 16 18 / .2), 0 2px 6px rgb(16 16 18 / .12);
+}
+html[data-flip='es']::view-transition-old(root) { animation: flip-out-l .96s linear both; }
+html[data-flip='es']::view-transition-new(root) { animation: flip-in-r .96s linear both; }
+html[data-flip='en']::view-transition-old(root) { animation: flip-out-r .96s linear both; }
+html[data-flip='en']::view-transition-new(root) { animation: flip-in-l .96s linear both; }
+
+@keyframes flip-out-l {
+  0% {
+    transform: perspective(2800px) rotateY(0deg) scale(1);
+    filter: brightness(1);
+    opacity: 1;
+    animation-timing-function: cubic-bezier(.45, .02, .8, .2);
+  }
+  50% {
+    transform: perspective(2800px) rotateY(90deg) scale(.92);
+    filter: brightness(.72);
+    opacity: 1;
+  }
+  51%, 100% {
+    transform: perspective(2800px) rotateY(90deg) scale(.92);
+    filter: brightness(.72);
+    opacity: 0;
+  }
+}
+@keyframes flip-in-r {
+  0%, 50% {
+    transform: perspective(2800px) rotateY(-90deg) scale(.92);
+    filter: brightness(.72);
+    opacity: 0;
+  }
+  51% {
+    transform: perspective(2800px) rotateY(-86deg) scale(.92);
+    filter: brightness(.76);
+    opacity: 1;
+    animation-timing-function: cubic-bezier(.16, .7, .22, 1);
+  }
+  100% {
+    transform: perspective(2800px) rotateY(0deg) scale(1);
+    filter: brightness(1);
+    opacity: 1;
+  }
+}
+@keyframes flip-out-r {
+  0% {
+    transform: perspective(2800px) rotateY(0deg) scale(1);
+    filter: brightness(1);
+    opacity: 1;
+    animation-timing-function: cubic-bezier(.45, .02, .8, .2);
+  }
+  50% {
+    transform: perspective(2800px) rotateY(-90deg) scale(.92);
+    filter: brightness(.72);
+    opacity: 1;
+  }
+  51%, 100% {
+    transform: perspective(2800px) rotateY(-90deg) scale(.92);
+    filter: brightness(.72);
+    opacity: 0;
+  }
+}
+@keyframes flip-in-l {
+  0%, 50% {
+    transform: perspective(2800px) rotateY(90deg) scale(.92);
+    filter: brightness(.72);
+    opacity: 0;
+  }
+  51% {
+    transform: perspective(2800px) rotateY(86deg) scale(.92);
+    filter: brightness(.76);
+    opacity: 1;
+    animation-timing-function: cubic-bezier(.16, .7, .22, 1);
+  }
+  100% {
+    transform: perspective(2800px) rotateY(0deg) scale(1);
+    filter: brightness(1);
+    opacity: 1;
+  }
+}

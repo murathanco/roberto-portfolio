@@ -1,0 +1,178 @@
+/*
+  A real scrollbar, drawn by us, because the Mac overlay bar hides custom skins.
+  First visit is Windows 95. Later visits and routes use the melon textures.
+  The arrow art on the grey bar follows the classic control (same drawing as 98.css, MIT).
+*/
+
+html[data-scroll] { --sb-w: 0px; }
+html.has-sbar[data-scroll='w95'] { --sb-w: 16px; }
+html.has-sbar:not([data-scroll='w95']) { --sb-w: 22px; }
+/* Work only gives up that strip while the bar is actually on screen. */
+html.has-sbar:has(body[data-page='work']):not(:has(.sbar.is-live)) { --sb-w: 0px; }
+
+/* The native bar stays usable for keyboard and trackpad, and stays invisible. */
+html, body { scrollbar-width: none; }
+html::-webkit-scrollbar,
+body::-webkit-scrollbar { display: none; width: 0; height: 0; }
+
+/* The coloured edge tabs sit just left of the bar, and slide with it on the work page. */
+.edges { right: var(--sb-w); }
+html:has(body[data-page='work']) .edges {
+  transition: right .3s var(--ease), top .45s var(--ease);
+}
+
+.sbar {
+  position: fixed; z-index: 28; top: 0; right: 0; bottom: 0;
+  display: flex; flex-direction: column; width: 16px;
+  user-select: none; touch-action: none;
+}
+html:not([data-scroll='w95']) .sbar { width: 22px; }
+.sbar[hidden] { display: none; }
+
+/* On the work page the bar stays offstage until the page is moving, and the frame eases open around it. */
+body[data-page='work'] .sbar {
+  opacity: 0;
+  translate: 100% 0;
+  pointer-events: none;
+  transition: opacity .3s var(--ease), translate .3s var(--ease), top .45s var(--ease);
+}
+body[data-page='work'] .sbar.is-live { opacity: 1; translate: 0 0; pointer-events: auto; }
+@media (prefers-reduced-motion: reduce) {
+  body[data-page='work'] .sbar,
+  html:has(body[data-page='work']) .edges { transition: none; }
+  body[data-page='work'] .panel { transition: none; }
+}
+
+.sbar__up, .sbar__down { flex: none; width: 100%; height: 17px; padding: 0; }
+html:not([data-scroll='w95']) .sbar__up,
+html:not([data-scroll='w95']) .sbar__down { height: 22px; }
+.sbar__track { position: relative; flex: 1; min-height: 0; }
+.sbar__thumb { position: absolute; left: 0; right: 0; min-height: 24px; cursor: grab; }
+.sbar__thumb.is-drag { cursor: grabbing; }
+
+/* ---------- Windows 95 ---------- */
+
+html[data-scroll='w95'] .sbar { background: #c0c0c0; }
+html[data-scroll='w95'] .sbar__track {
+  background: #fff url('/scrollbar/track.svg') 0 0 / 2px 2px repeat;
+  image-rendering: pixelated;
+}
+html[data-scroll='w95'] .sbar__thumb {
+  background: #c0c0c0;
+  box-shadow:
+    inset -1px -1px #0a0a0a,
+    inset 1px 1px #fff,
+    inset -2px -2px #808080,
+    inset 2px 2px #dfdfdf;
+}
+html[data-scroll='w95'] .sbar__thumb.is-drag {
+  box-shadow:
+    inset -1px -1px #fff,
+    inset 1px 1px #0a0a0a,
+    inset -2px -2px #dfdfdf,
+    inset 2px 2px #808080;
+}
+html[data-scroll='w95'] .sbar__up,
+html[data-scroll='w95'] .sbar__down {
+  background: url('/scrollbar/up.svg') center / 16px 17px no-repeat;
+}
+html[data-scroll='w95'] .sbar__down { background-image: url('/scrollbar/down.svg'); }
+html[data-scroll='w95'] .sbar__up:active { background-image: url('/scrollbar/up-active.svg'); }
+html[data-scroll='w95'] .sbar__down:active { background-image: url('/scrollbar/down-active.svg'); }
+
+/* ---------- melon textures ---------- */
+
+html[data-scroll='wood']      { --sb-tex: url('/textures/wood.jpg');      --sb-tile: 92px;  --sb-dim: rgba(48, 22, 6, .46);  --sb-lit: rgba(255, 228, 190, .16); }
+html[data-scroll='metal']     { --sb-tex: url('/textures/metal.jpg');     --sb-tile: 56px;  --sb-dim: rgba(0, 0, 0, .55);    --sb-lit: rgba(255, 255, 255, .22); }
+html[data-scroll='stone']     { --sb-tex: url('/textures/stone.jpg');     --sb-tile: 72px;  --sb-dim: rgba(20, 8, 6, .42);   --sb-lit: rgba(255, 220, 190, .1); }
+html[data-scroll='brick']     { --sb-tex: url('/textures/brick.jpg');     --sb-tile: 80px;  --sb-dim: rgba(40, 8, 4, .4);    --sb-lit: rgba(255, 210, 180, .12); }
+html[data-scroll='grass']     { --sb-tex: url('/textures/grass.jpg');     --sb-tile: 64px;  --sb-dim: rgba(0, 28, 4, .4);    --sb-lit: rgba(210, 255, 180, .1); }
+html[data-scroll='clover']    { --sb-tex: url('/textures/clover.jpg');    --sb-tile: 52px;  --sb-dim: rgba(0, 36, 8, .38);   --sb-lit: rgba(220, 255, 200, .12); }
+html[data-scroll='water']     { --sb-tex: url('/textures/water.jpg');     --sb-tile: 76px;  --sb-dim: rgba(0, 30, 40, .38);  --sb-lit: rgba(220, 255, 255, .16); }
+html[data-scroll='sky']       { --sb-tex: url('/textures/sky.jpg');       --sb-tile: 140px; --sb-dim: rgba(16, 40, 80, .28); --sb-lit: rgba(255, 255, 255, .2); }
+html[data-scroll='fire']      { --sb-tex: url('/textures/fire.jpg');      --sb-tile: 88px;  --sb-dim: rgba(80, 10, 0, .28);  --sb-lit: rgba(255, 255, 220, .14); }
+html[data-scroll='candy']     { --sb-tex: url('/textures/candy.jpg');     --sb-tile: 96px;  --sb-dim: rgba(60, 0, 30, .28);  --sb-lit: rgba(255, 255, 255, .16); }
+html[data-scroll='amethyst']  { --sb-tex: url('/textures/amethyst.jpg');  --sb-tile: 80px;  --sb-dim: rgba(20, 0, 30, .4);   --sb-lit: rgba(255, 230, 255, .14); }
+html[data-scroll='rainbow']   { --sb-tex: url('/textures/rainbow.jpg');   --sb-tile: 180px; --sb-dim: rgba(0, 0, 0, .16);    --sb-lit: rgba(255, 255, 255, .18); }
+
+html[data-scroll]:not([data-scroll='w95']) .sbar__track {
+  background-image: linear-gradient(var(--sb-dim), var(--sb-dim)), var(--sb-tex);
+  background-size: auto, var(--sb-tile);
+  background-position: 0 0, center;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .55), inset 0 0 8px rgba(0, 0, 0, .28);
+}
+html[data-scroll]:not([data-scroll='w95']) .sbar__thumb {
+  background-image: linear-gradient(var(--sb-lit), var(--sb-lit)), var(--sb-tex);
+  background-size: auto, var(--sb-tile);
+  background-position: 0 0, center;
+  box-shadow:
+    inset 1px 1px 0 rgba(255, 255, 255, .92),
+    inset -1px -1px 0 rgba(0, 0, 0, .75),
+    inset 2px 2px 0 rgba(255, 255, 255, .3),
+    inset -2px -2px 0 rgba(0, 0, 0, .42);
+}
+html[data-scroll]:not([data-scroll='w95']) .sbar__thumb::after {
+  content: '';
+  position: absolute; left: 4px; right: 4px; top: 50%; height: 14px;
+  transform: translateY(-50%);
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, .9) 0 1px,
+    transparent 1px 4px,
+    rgba(0, 0, 0, .55) 4px 5px,
+    transparent 5px 8px
+  );
+  pointer-events: none;
+}
+html[data-scroll]:not([data-scroll='w95']) .sbar__thumb.is-drag {
+  box-shadow:
+    inset 1px 1px 0 rgba(0, 0, 0, .7),
+    inset -1px -1px 0 rgba(255, 255, 255, .45),
+    inset 2px 2px 0 rgba(0, 0, 0, .35);
+}
+html[data-scroll]:not([data-scroll='w95']) .sbar__up,
+html[data-scroll]:not([data-scroll='w95']) .sbar__down {
+  background-repeat: no-repeat, no-repeat, repeat;
+  background-size: 11px 9px, auto, var(--sb-tile);
+  background-position: center, 0 0, center;
+  box-shadow:
+    inset 1px 1px 0 rgba(255, 255, 255, .85),
+    inset -1px -1px 0 rgba(0, 0, 0, .7);
+}
+html[data-scroll]:not([data-scroll='w95']) .sbar__up {
+  background-image: url('/scrollbar/tex-up.svg'), linear-gradient(var(--sb-dim), var(--sb-dim)), var(--sb-tex);
+}
+html[data-scroll]:not([data-scroll='w95']) .sbar__down {
+  background-image: url('/scrollbar/tex-down.svg'), linear-gradient(var(--sb-dim), var(--sb-dim)), var(--sb-tex);
+}
+html[data-scroll]:not([data-scroll='w95']) .sbar__up:active,
+html[data-scroll]:not([data-scroll='w95']) .sbar__down:active {
+  background-position: center calc(50% + 1px), 0 0, center;
+  box-shadow:
+    inset 1px 1px 0 rgba(0, 0, 0, .7),
+    inset -1px -1px 0 rgba(255, 255, 255, .4);
+}
+
+/* Info is a plain ASCII page, so the bar is a line and a block. */
+html[data-scroll]:has(body[data-page='info']) { --sb-w: 16px; }
+html[data-scroll]:has(body[data-page='info']) .sbar {
+  width: 16px; background: #fff; border-left: 1px solid #111;
+}
+html[data-scroll]:has(body[data-page='info']) .sbar__track {
+  background: #fff; background-image: none; box-shadow: none;
+}
+html[data-scroll]:has(body[data-page='info']) .sbar__thumb,
+html[data-scroll]:has(body[data-page='info']) .sbar__thumb.is-drag {
+  background: #111; background-image: none; box-shadow: none;
+}
+html[data-scroll]:has(body[data-page='info']) .sbar__thumb::after { content: none; }
+html[data-scroll]:has(body[data-page='info']) .sbar__up,
+html[data-scroll]:has(body[data-page='info']) .sbar__down,
+html[data-scroll]:has(body[data-page='info']) .sbar__up:active,
+html[data-scroll]:has(body[data-page='info']) .sbar__down:active {
+  display: grid; place-items: center; height: 16px; padding: 0;
+  background: #fff; background-image: none; box-shadow: none;
+  color: #111; font: 14px/1 ui-monospace, Menlo, Consolas, monospace;
+}
+html[data-scroll]:has(body[data-page='info']) .sbar__up::before { content: '^'; }
+html[data-scroll]:has(body[data-page='info']) .sbar__down::before { content: 'v'; }

@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Roberto Gonzalez Sosa — Your Sharp Associate</title>
+    <meta name="description" content="ROBERTO.GS is the creative practice of Roberto Gonzalez Sosa. Brand design, editorial, illustration and photography from Toronto, ON." />
+    <meta name="theme-color" content="#ffe45c" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preload" href="/fonts/Inter-VF.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <a class="skip" href="#content">Skip to content</a>
+
+    <!-- Left: who this is, and how to get around. It never changes place. -->
+    <aside class="stage" aria-label="Roberto Gonzalez Sosa">
+      <nav class="tabs" aria-label="Site">
+        <a class="tab" href="#/" data-nav="work">work</a>
+        <a class="tab" href="#/info" data-nav="info">info</a>
+        <a class="tab" href="mailto:robertogonzalezsosa@gmail.com">contact</a>
+      </nav>
+
+      <div class="stage__logo" id="logo" aria-hidden="true"></div>
+
+      <nav class="flow" aria-label="Projects">
+        <ol id="list"></ol>
+      </nav>
+
+      <footer class="stage__foot">
+        <a href="#/"><h1>Roberto Gonzalez Sosa</h1><span>Your Sharp Associate</span></a>
+        <span>Toronto, ON <img class="doodle" src="/doodle.svg" alt="" width="16" height="20" /></span>
+      </footer>
+    </aside>
+
+    <!-- Right: whatever was picked on the left. -->
+    <main class="panel" id="content" tabindex="-1"></main>
+
+    <div class="viewer" id="viewer" role="dialog" aria-modal="true" aria-label="Image viewer" hidden>
+      <div class="bar">
+        <span id="viewer-count"></span>
+        <span class="bar__group">
+          <button type="button" id="viewer-prev"><span class="arr">←</span> Previous</button>
+          <button type="button" id="viewer-next">Next <span class="arr">→</span></button>
+          <button type="button" id="viewer-close">Close <span class="arr">✕</span></button>
+        </span>
+      </div>
+      <button class="viewer__body" id="viewer-body" type="button" aria-label="Next image"></button>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

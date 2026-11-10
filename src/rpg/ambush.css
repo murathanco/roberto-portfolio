@@ -1,0 +1,142 @@
+/* Full-screen idle ambush. Sword: Quake Style Sword by sndein (CC-BY 4.0, OpenGameArt). */
+
+html.amb-lock { overflow: hidden; }
+html.amb-lock .slips,
+html.amb-lock .finds-toast { display: none !important; }
+
+.amb {
+  position: fixed; inset: 0; z-index: 90;
+  background: rgb(0 0 0 / .42); color: #e8e0d4;
+  font: 15px/1.3 "Times New Roman", Times, serif;
+  opacity: 0; transition: opacity .3s ease;
+  touch-action: none; cursor: crosshair;
+}
+.amb.is-on { opacity: 1; }
+.amb[hidden] { display: none; }
+.amb canvas {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  display: block; image-rendering: pixelated; background: transparent;
+}
+
+.amb__cross {
+  position: absolute; z-index: 2; left: 50%; top: 50%; width: 10px; height: 10px;
+  transform: translate(-50%, -50%); pointer-events: none; opacity: .85;
+}
+.amb__cross::before, .amb__cross::after {
+  content: ''; position: absolute; background: #fff; box-shadow: 0 0 0 1px #000;
+}
+.amb__cross::before { left: 4px; top: 0; width: 2px; height: 10px; }
+.amb__cross::after { top: 4px; left: 0; width: 10px; height: 2px; }
+
+.amb__hurt {
+  position: absolute; inset: 0; z-index: 3; pointer-events: none;
+  box-shadow: inset 0 0 120px 24px rgb(190 20 0 / 0);
+}
+.amb__hurt.is-on { animation: amb-flash .55s ease-out; }
+
+.amb.is-dead .amb__cross { visibility: hidden; }
+
+/* Same book as the bottom of the work: leather, plank, cream paper, a pixel gif. */
+.amb__dead {
+  position: absolute; inset: 0; z-index: 4;
+  display: grid; place-items: center;
+  padding: 24px 16px;
+  background:
+    linear-gradient(rgb(20 12 6 / .46), rgb(20 12 6 / .46)),
+    url('/textures/finds/leather.jpg') center / 180px;
+}
+.amb__dead[hidden] { display: none; }
+.amb__card {
+  width: min(340px, 100%);
+  display: grid; justify-items: stretch; gap: 0;
+  padding: 12px;
+  background:
+    linear-gradient(rgb(48 26 12 / .2), rgb(48 26 12 / .2)),
+    url('/textures/finds/plank.jpg') center / 200px;
+  box-shadow:
+    inset 2px 2px 0 rgb(255 220 170 / .25),
+    inset -3px -3px 0 rgb(20 8 0 / .5),
+    0 6px 0 rgb(0 0 0 / .22);
+  color: #101012;
+  text-align: center;
+  animation: amb-card-in .35s ease both;
+}
+.amb__sheet,
+.amb__card button {
+  background: #f7f0de;
+  margin: 0;
+}
+.amb__badge {
+  display: grid; place-items: center;
+  width: 64px; height: 64px;
+  margin: 16px auto 0;
+  background:
+    linear-gradient(rgb(0 0 0 / .18), rgb(0 0 0 / .18)),
+    url('/textures/finds/metal.jpg') center / cover;
+  box-shadow: inset 1px 1px 0 #ccc, inset -2px -2px 0 #333;
+}
+.amb__mark {
+  display: block;
+  width: 40px; height: 40px;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+.amb__line,
+.amb__who {
+  margin: 0;
+  padding: 0 20px;
+  font: 400 16px/1.45 "Times New Roman", Times, serif;
+  color: #101012;
+}
+.amb__line { padding-top: 12px; font-weight: 700; }
+.amb__who { padding: 6px 20px 16px; color: #1a120c; }
+.amb__card button {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  margin-top: 12px;
+  min-height: 44px; padding: 12px 16px 14px;
+  border: 0;
+  font: 400 16px/1.3 "Times New Roman", Times, serif;
+  color: #101012;
+  box-shadow: inset 0 1px 0 #fff8e8;
+}
+.amb__rise-ico {
+  flex: none; width: 40px; height: 40px;
+  display: grid; place-items: center;
+  background:
+    linear-gradient(rgb(0 0 0 / .18), rgb(0 0 0 / .18)),
+    url('/textures/finds/metal.jpg') center / cover;
+  box-shadow: inset 1px 1px 0 #ccc, inset -2px -2px 0 #333;
+}
+.amb__card button img {
+  width: 32px; height: 32px;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+.amb__card button span {
+  text-decoration: underline;
+  text-decoration-thickness: 0.06em;
+  text-underline-offset: 0.12em;
+}
+.amb__card button:hover { background: #fff8e8; color: #2f4bd8; }
+.amb__card button:hover span { text-decoration-thickness: 0.1em; }
+.amb__card button:focus-visible { outline: 3px solid #2f4bd8; outline-offset: 2px; }
+
+.amb__dead,
+.amb__dead * {
+  cursor: url('/cursors/rpg-dagger.png') 23 0, pointer;
+  cursor: -webkit-image-set(url('/cursors/rpg-dagger.png') 1x, url('/cursors/rpg-dagger@2x.png') 2x) 23 0, url('/cursors/rpg-dagger.png') 23 0, pointer;
+  cursor: image-set(url('/cursors/rpg-dagger.png') 1x, url('/cursors/rpg-dagger@2x.png') 2x) 23 0, url('/cursors/rpg-dagger.png') 23 0, pointer;
+}
+
+@keyframes amb-flash {
+  from { box-shadow: inset 0 0 180px 48px rgb(200 10 0 / .72); }
+  to { box-shadow: inset 0 0 120px 24px rgb(190 20 0 / 0); }
+}
+@keyframes amb-card-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .amb, .amb__hurt, .amb__card { transition: none; animation: none !important; }
+}

@@ -1,0 +1,613 @@
+/* Times New Roman, same face and size as plastiquefamille.org: 16px, regular, everywhere the site speaks. */
+
+/*
+  White on both sides. The left holds the monogram and the three boxes.
+  The right is a vertical list of every project. Each one scrolls sideways through its pictures and a note.
+*/
+:root {
+  --white: #fff;
+  --ink: #101012;
+  --dim: #66666a;
+  --mist: #f0f0ee;
+  --box: #d9d9d5;     /* a picture that is not there yet */
+  --butter: #ffe45c;
+  --cobalt: #2f4bd8;
+  --lilac: #b79dff;
+  --mint: #45d98a;
+  --tomato: #ff5330;
+  --peach: #ff9f43;
+  --sky: #55b9ff;
+  --pink: #ff86c8;
+
+  --stage: 40vw;
+  --gap: 6px;
+  --pad: 16px;
+  --strip: min(64vh, 640px);
+  --ease: cubic-bezier(.2, .7, .2, 1);
+  --spring: cubic-bezier(.34, 1.56, .64, 1);
+  --sans: 'Times New Roman', Times, serif;
+  --mono: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace;
+}
+[data-c='lilac'] { --c: var(--lilac); }
+[data-c='mint'] { --c: var(--mint); }
+[data-c='tomato'] { --c: var(--tomato); }
+[data-c='peach'] { --c: var(--peach); }
+[data-c='sky'] { --c: var(--sky); }
+[data-c='pink'] { --c: var(--pink); }
+
+*, *::before, *::after { box-sizing: border-box; }
+html { background: var(--white); color: var(--ink); -webkit-text-size-adjust: 100%; cursor: url('/cursor-sm.png') 2 0, auto; cursor: image-set(url('/cursor-sm.png') 1x, url('/cursor-sm@2x.png') 2x) 2 0, auto; }
+body { margin: 0; font: 400 16px/normal var(--sans); letter-spacing: normal; font-synthesis: none; -webkit-font-smoothing: antialiased; }
+p, h1, h2, ul, figure { margin: 0; padding: 0; font: inherit; }
+ul { list-style: none; }
+a { color: inherit; text-decoration: none; cursor: inherit; }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: inherit; border-radius: 0; text-align: inherit; }
+img { display: block; max-width: 100%; }
+b, strong { font-weight: inherit; }
+::selection { background: var(--butter); color: var(--ink); }
+:focus-visible { outline: 3px solid var(--cobalt); outline-offset: -3px; }
+.viewer .bar :focus-visible { outline-offset: 2px; }
+.panel:focus { outline: 0; }
+.skip { position: fixed; left: 0; top: 0; z-index: 100; background: var(--ink); color: var(--white); padding: 8px 12px; transform: translateY(-200%); }
+.skip:focus { transform: none; }
+.arr { letter-spacing: 0; }
+
+/* ---------- labels and buttons ---------- */
+
+/* .tag is a small monospace label. .key is a button. .sq is a square button with one arrow in it. */
+.tag {
+  display: inline-flex; align-items: center; flex: none; min-height: 26px; padding: 0 8px; background: var(--mist); color: var(--ink);
+  font: 16px/1.2 var(--sans); letter-spacing: normal; text-transform: lowercase; white-space: nowrap;
+}
+.key {
+  display: inline-flex; align-items: center; gap: .45em; flex: none; min-height: 34px; padding: 0 11px; background: var(--mist);
+  font: 16px/1.2 var(--sans); text-transform: lowercase; white-space: nowrap;
+  transition: transform .25s var(--spring), background-color .15s, color .15s;
+}
+.sq {
+  width: 40px; height: 40px; display: grid; place-items: center; background: var(--mist); font-size: 18px;
+  transition: transform .25s var(--spring), background-color .15s, color .15s;
+}
+@media (hover: hover) {
+  .key:hover, .sq:hover { background: var(--cobalt); color: var(--white); transform: translate(-2px, -3px) rotate(-3deg); }
+}
+.key:active, .sq:active { transform: none; }
+
+/* ---------- left ---------- */
+
+.stage {
+  position: fixed; inset: 0 auto 0 0; width: var(--stage);
+  display: grid; grid-template-rows: auto 1fr auto; background: var(--white);
+  /* --leak is how high the water covers this column, so the name stays above it. */
+  padding-bottom: var(--leak, 0px);
+}
+/* three boxes: work, info, contact. The one you point at shoves the others aside. */
+.tabs { display: flex; gap: 4px; height: 64px; align-items: flex-start; }
+.tab {
+  flex: 1; height: 40px; display: flex; align-items: center; justify-content: center; white-space: nowrap;
+  background: var(--mist); color: var(--ink); font-size: 16px;
+  transition: flex-grow .3s var(--ease), height .3s var(--ease), background-color .2s, color .2s;
+}
+.tab:nth-child(2) { background: #e4e4e1; }
+.tab:hover, .tab:focus-visible { flex-grow: 2.2; height: 64px; background: var(--cobalt); color: var(--white); }
+.tab[aria-current], .tab[aria-current]:hover { background: var(--ink); color: var(--white); }
+
+.stage__logo { min-height: 0; margin-top: -24px; touch-action: pan-y; cursor: url('/cursor-sm.png') 2 0, auto; cursor: image-set(url('/cursor-sm.png') 1x, url('/cursor-sm@2x.png') 2x) 2 0, auto; }
+.stage__logo canvas { width: 100%; height: 100%; display: block; cursor: url('/cursor-sm.png') 2 0, auto; cursor: image-set(url('/cursor-sm.png') 1x, url('/cursor-sm@2x.png') 2x) 2 0, auto; }
+.stage__logo.is-flat { display: grid; place-items: center; }
+.stage__logo.is-flat svg { width: 56%; }
+
+.stage__foot { display: flex; justify-content: space-between; align-items: flex-end; gap: var(--pad); padding: 16px var(--pad) 14px; white-space: nowrap; }
+.stage__foot h1 { font-weight: 400; }
+.name span { display: block; opacity: .6; }
+.place { position: relative; display: inline-block; }
+.place__btn { text-decoration: underline dotted; text-underline-offset: .2em; text-decoration-thickness: 1px; }
+.place.is-hot .place__btn, .place__btn.is-hot, .place__btn[aria-expanded='true'] { background: var(--butter); }
+.place.is-hot, .place.is-hot *, .place__btn.is-hot, .place__btn.is-hot * { cursor: none; }
+
+/* A flat sticker. The cobalt block is the shadow, so the corner stays filled. */
+.tick {
+  position: absolute; z-index: 5; right: 0; bottom: calc(100% + 26px);
+  padding: 0 4px 4px 0; background: var(--cobalt);
+}
+.tick[hidden] { display: none; }
+html.is-es .tick { right: auto; left: 0; }
+.tick__card {
+  display: flex; align-items: center; gap: 10px;
+  padding: 6px 12px 6px 6px; background: var(--white); color: var(--ink);
+  border: 1px solid var(--ink); font: 400 16px/1.15 var(--sans);
+}
+.tick__face { display: block; width: 38px; height: 38px; image-rendering: pixelated; flex: none; }
+.tick__read { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.tick__time { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.tick__sub { opacity: .6; white-space: nowrap; }
+
+/* Small clock, sitting just above the pointer so it doesn't cover the word or the doodle. */
+.clockcur {
+  position: fixed; left: 0; top: 0; z-index: 80; width: 19px; height: 19px;
+  margin: -28px 0 0 -9px; pointer-events: none; image-rendering: pixelated; opacity: 0;
+}
+.clockcur.is-on { opacity: 1; }
+.stage__foot:has(.is-hot) .toy:not([aria-pressed='true']) .doodle { transform: none; }
+.toy { display: inline-block; vertical-align: -5px; margin-left: 4px; }
+.toy:focus-visible { outline-offset: 3px; }
+.doodle { display: block; width: 16px; height: 20px; transition: transform .6s var(--spring); }
+.stage__foot:hover .doodle, .toy[aria-pressed='true'] .doodle { transform: rotate(360deg) scale(1.6); }
+
+/* ---------- the doodle's game: the monogram's side turns into a tiny low-res 3D world ---------- */
+
+.stage:has(.is-game) .tabs { position: relative; z-index: 2; }
+.stage__logo.is-game { position: relative; cursor: inherit; touch-action: none; }
+.stage__logo.is-game > :not(.game) { display: none; }
+.game { position: absolute; inset: 0; overflow: hidden; background: #a9c8ea; outline: 0; animation: iris .6s cubic-bezier(.2, .8, .2, 1) both; }
+.game canvas { width: 100%; height: 100%; display: block; image-rendering: pixelated; }
+@keyframes iris { from { clip-path: circle(0% at 50% 50%); } to { clip-path: circle(75% at 50% 50%); } }
+
+.game__hud { --edge: #101012; font-family: 'Pixelated MS Sans Serif', var(--mono); letter-spacing: 0; -webkit-font-smoothing: none; }
+.game__hud { position: absolute; inset: 32px var(--pad) auto; display: flex; justify-content: space-between; align-items: center; pointer-events: none; }
+.game__hud > * { pointer-events: auto; }
+.game__count {
+  display: flex; align-items: center; gap: 8px; font-size: 22px; font-weight: 700; line-height: 1; color: var(--butter);
+  text-shadow: 2px 0 var(--edge), -2px 0 var(--edge), 0 2px var(--edge), 0 -2px var(--edge), 2px 2px var(--edge);
+}
+.game__count svg { width: 22px; height: 22px; color: var(--white); filter: drop-shadow(2px 2px 0 var(--edge)); }
+.game__m {
+  font-size: 22px; font-weight: 700; line-height: 1; color: var(--white); font-variant-numeric: tabular-nums;
+  text-shadow: 2px 0 var(--edge), -2px 0 var(--edge), 0 2px var(--edge), 0 -2px var(--edge), 2px 2px var(--edge);
+}
+/* The opening plays like a film: black bars slide in top and bottom, and the score waits. */
+.game::before, .game::after {
+  content: ''; position: absolute; z-index: 1; left: 0; right: 0; height: 12%; background: #101012; pointer-events: none;
+  transition: transform .5s var(--ease);
+}
+.game::before { top: 0; transform: translateY(-101%); }
+.game::after { bottom: 0; transform: translateY(101%); }
+.game.is-cine::before, .game.is-cine::after { transform: none; }
+.game__hud, .game__end { z-index: 2; }
+.game.is-cine .game__count, .game.is-cine .game__m { visibility: hidden; }
+.game__end { position: absolute; left: 50%; top: 50%; translate: -50% -50%; }
+.game__end[hidden] { display: none; }
+.game__end .w95__msg { line-height: 16px; }
+.game__stats { display: flex; align-items: center; gap: 6px; font-variant-numeric: tabular-nums; }
+.game__stats svg { width: 13px; height: 13px; }
+.game__stats span + span { margin-left: 12px; }
+
+/* ---------- right ---------- */
+
+.panel { margin-left: var(--stage); min-height: 100vh; padding: 20px calc(20px + var(--sb-w, 0px)) 20px 0; }
+
+/* 20px frame around the right half: top, outer side, bottom. The works live in it. */
+.edges { position: fixed; z-index: 25; inset: 0 0 0 var(--stage); pointer-events: none; }
+.edges__top, .edges__foot, .edges__side { display: flex; position: absolute; }
+.edges__top { top: 0; left: 0; right: 0; }
+.edges__foot { bottom: 0; left: 0; right: 0; }
+.edges__side { top: 20px; right: 0; bottom: 20px; width: 20px; flex-direction: column; }
+.edge {
+  pointer-events: auto; display: flex; align-items: center; justify-content: center; height: 20px; min-width: 0;
+  padding-inline: 8px; overflow: hidden;
+  background: var(--c, var(--mist)); color: var(--ink); font-size: 16px; line-height: 1; letter-spacing: normal; text-transform: lowercase;
+}
+.edge span { min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.edges__top .edge, .edges__foot .edge { flex: 1; }
+.edges__side .edge { flex: 1; width: 20px; height: auto; min-height: 0; padding: 8px 0; writing-mode: vertical-lr; }
+.edge[aria-current],
+.edge:has([aria-current]) { background: var(--ink); color: var(--white); }
+@media (hover: hover) {
+  .edge:hover { background: var(--ink); color: var(--white); }
+}
+html.has-viewer .edges, html.has-fit .edges { visibility: hidden; }
+
+/* The flip control takes a slice of the placeholder a slot, on its left. The label keeps the rest. */
+.edgebox { flex: 1; display: flex; min-width: 0; }
+.edgebox .edge { flex: 1; min-width: 0; }
+.edgeflip {
+  flex: none; width: 20px; height: 20px; display: grid; place-items: center; pointer-events: auto;
+  background: var(--white); color: var(--ink);
+  box-shadow: inset 0 0 0 1px rgba(16, 16, 18, .28);
+  transition: background-color .15s, scale .12s;
+}
+.flipico { display: block; width: 14px; height: 14px; }
+.edgeflip:hover { background: var(--butter); }
+.edgeflip:active { scale: 0.96; }
+.edgeflip:focus-visible { outline-offset: 2px; }
+.edges__side .edgebox { flex-direction: column; }
+.edges__side .edgeflip { width: 20px; height: 20px; }
+.panel > * { animation: rise .45s var(--ease) both; }
+@keyframes rise { from { transform: translateY(16px); opacity: 0; } }
+
+/* the work: every project, one under the next. the pictures and the note run sideways. */
+.index { display: flex; flex-direction: column; gap: var(--gap); min-width: 0; }
+.entry {
+  container-type: inline-size;
+  --cover: clamp(140px, 28cqw, 240px);
+  --note: calc(100cqw - var(--cover) - var(--gap) - 28px);
+  min-width: 0; background: var(--white); scroll-margin-top: 24px;
+}
+.entry:has(.slide img) {
+  --note: clamp(260px, 36cqw, 420px);
+  --cover: max(160px, calc(100cqw - var(--note) - var(--gap) - 28px));
+}
+.entry__bar {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 8px 22px; min-height: 0;
+  padding: 10px 16px; background: var(--c, var(--box));
+}
+.entry__title { flex: 1 1 10em; min-width: 0; font-size: 16px; font-weight: 400; line-height: normal; letter-spacing: normal; text-transform: lowercase; text-wrap: balance; overflow-wrap: break-word; }
+.entry__meta, .entry__year, .entry__count {
+  flex: none; min-width: 0; margin: 0; font: 16px/normal var(--sans); letter-spacing: normal; text-transform: lowercase;
+  font-variant-numeric: tabular-nums;
+}
+.entry__meta { overflow-wrap: break-word; }
+.entry__fit {
+  flex: none; width: 40px; height: 40px; display: grid; place-items: center; background: var(--white);
+}
+.entry__fit:hover { background: var(--butter); }
+.win { width: 32px; height: 32px; image-rendering: pixelated; }
+
+.entry__stage { height: auto; min-width: 0; }
+.entry .strip {
+  height: auto; min-height: clamp(300px, 46svh, 560px); align-items: stretch; padding-inline-end: 20px;
+  overflow-anchor: none;
+}
+/* Cover and note share the row, with a sliver of the next picture. The row grows if the words need it. */
+.entry .strip > .slide:first-child {
+  width: var(--cover); height: 100%; aspect-ratio: auto; background: var(--box);
+}
+.entry:has(.slide img) .strip > .slide:first-child { background: var(--white); }
+.entry .slide { height: 100%; }
+.entry .slide img { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; object-fit: contain; object-position: center; }
+.entry__note {
+  flex: none; align-self: stretch; display: flex; flex-direction: column; gap: 16px;
+  width: var(--note); height: 100%; min-width: 0; padding: 22px 22px 18px; overflow: visible;
+  background: var(--c, var(--mist)); scroll-snap-align: start;
+}
+.entry__note .spec dt { color: var(--ink); }
+.entry__copy { min-width: 0; overflow: visible; font-size: 16px; line-height: normal; letter-spacing: normal; text-wrap: pretty; overflow-wrap: break-word; }
+.entry__note .key { flex: none; align-self: flex-start; margin-top: auto; }
+
+.entry__end { display: grid; place-items: center; padding: 40px 28px; background: #aeb7c2; text-align: center; }
+.entry__end p { font-size: 16px; font-weight: 400; line-height: normal; letter-spacing: normal; }
+.entry__end a { background: var(--butter); padding: 0 .08em; text-decoration: underline; text-decoration-thickness: .06em; text-underline-offset: .08em; }
+.entry__end a:hover { background: var(--ink); color: var(--white); }
+
+.spec { display: grid; gap: 3px; font: 16px/normal var(--sans); letter-spacing: normal; text-transform: lowercase; }
+.spec div { display: grid; grid-template-columns: 5.2rem minmax(0, 1fr); gap: 8px 10px; }
+.spec dt { color: var(--dim); }
+.spec dd { margin: 0; min-width: 0; overflow-wrap: break-word; }
+
+.strip {
+  display: flex; gap: var(--gap); height: var(--strip); padding-right: 24%;
+  overflow-x: auto; overflow-y: hidden; overscroll-behavior-x: contain; scroll-snap-type: x proximity;
+  scrollbar-width: none; cursor: grab;
+}
+.strip::-webkit-scrollbar { display: none; }
+.strip.is-dragging { scroll-snap-type: none; cursor: grabbing; user-select: none; }
+.slide { position: relative; flex: none; height: 100%; aspect-ratio: var(--ar); overflow: hidden; scroll-snap-align: start; background: var(--box); transition: background-color .15s; }
+.slide--empty { display: grid; place-items: end start; padding: 10px; }
+.slide--empty:hover { background: var(--c); }
+.slide .tag { background: var(--white); }
+.slide img { width: 100%; height: 100%; object-fit: contain; user-select: none; transition: transform .6s var(--ease); }
+.slide:hover img { transform: scale(1.025); }
+.plus {
+  position: absolute; top: 10px; right: 10px; width: 40px; height: 40px; display: grid; place-items: center;
+  background: var(--white); color: var(--ink); font-size: 24px; font-weight: 300; line-height: 1; padding-bottom: 2px;
+  transition: transform .3s var(--spring), background-color .15s, color .15s;
+}
+.plus:hover { transform: rotate(90deg) scale(1.15); background: var(--cobalt); color: var(--white); }
+.slide figcaption { position: absolute; left: 10px; bottom: 10px; opacity: 0; transform: translateY(6px); transition: opacity .2s, transform .25s var(--ease); }
+.slide:hover figcaption, .slide:focus-within figcaption { opacity: 1; transform: none; }
+
+/* ---------- info: one ASCII sheet. the whole page switches with it. ---------- */
+
+.info {
+  width: min(66ch, 100%);
+  padding: 12px 8px 80px 28px;
+  color: #111;
+  font: 400 16px/1.55 ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, 'Courier New', monospace;
+  letter-spacing: 0;
+}
+.info__head { margin: 0; font: inherit; font-weight: 400; letter-spacing: .04em; text-transform: uppercase; }
+.info__rule { height: 1lh; margin: 1.15em 0 1em; overflow: hidden; }
+.info__rule::before { content: '----------------------------------------------------------------'; }
+.info__hello { display: grid; gap: .35em; }
+.info__lead, .info__where, .info__reach, .info__foot { max-width: 62ch; text-wrap: pretty; }
+.info__where { margin-top: .85em; }
+.info__reach { margin: 0 0 .15em; }
+.info__row {
+  display: grid; grid-template-columns: 12ch minmax(0, 1fr); column-gap: 2ch; align-items: baseline;
+  min-height: 44px; padding: .4em 0; color: inherit; text-decoration: none;
+}
+.info__label { white-space: nowrap; }
+.info__value { min-width: 0; overflow-wrap: anywhere; text-decoration: underline; text-underline-offset: .18em; text-decoration-thickness: 1px; }
+.info__row:is(:hover, :focus-visible) { background: #111; color: #fff; }
+.info__row:focus-visible { outline: 2px solid #111; outline-offset: 3px; }
+.info__foot { display: grid; gap: .2em; margin: 0; padding: 0 0 24px; background: none; color: #111; }
+.info__year { margin-top: .85em; }
+
+.stage__logo canvas.ascii-logo {
+  display: none; position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none;
+}
+
+html:has(body[data-page='info']) { cursor: auto; background: #fff; color: #111; }
+body[data-page='info'] {
+  font-family: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, 'Courier New', monospace;
+  font-size: 16px; line-height: 1.5; letter-spacing: 0; background: #fff; color: #111; cursor: auto;
+}
+body[data-page='info'] ::selection { background: #111; color: #fff; }
+body[data-page='info'] :focus-visible { outline: 2px solid #111; outline-offset: 2px; }
+body[data-page='info'] .edges { display: none; }
+body[data-page='info'] .stage__logo { position: relative; margin-top: 0; overflow: hidden; cursor: auto; }
+body[data-page='info'] .stage__logo canvas { cursor: auto; }
+body[data-page='info'] .stage__logo.is-ascii:not(.is-game) > canvas:not(.ascii-logo) { opacity: 0; }
+body[data-page='info'] .stage__logo.is-ascii:not(.is-game) canvas.ascii-logo { display: block; opacity: 1; }
+body[data-page='info'] .tabs {
+  height: auto; align-items: center; gap: .4ch 1.4ch; padding: 16px 18px 8px;
+}
+body[data-page='info'] .tab,
+body[data-page='info'] .tab:hover,
+body[data-page='info'] .tab:focus-visible,
+body[data-page='info'] .tab[aria-current],
+body[data-page='info'] .tab[aria-current]:hover {
+  flex: none; height: auto; min-height: 36px; padding: 4px 6px;
+  background: transparent; color: #111; transform: none;
+}
+body[data-page='info'] .tab::before { content: '[ '; }
+body[data-page='info'] .tab::after { content: ' ]'; }
+body[data-page='info'] .tab[aria-current] { text-decoration: underline; text-underline-offset: .28em; text-decoration-thickness: 1px; }
+body[data-page='info'] .tab:is(:hover, :focus-visible) { background: #111; color: #fff; }
+body[data-page='info'] .stage__foot {
+  white-space: normal; align-items: flex-start; padding: 14px 18px 16px; font: inherit;
+}
+body[data-page='info'] .name span { opacity: 1; }
+body[data-page='info'] .stage__foot h1 { font: inherit; }
+body[data-page='info'] .doodle { display: none; }
+body[data-page='info'] .toy { vertical-align: baseline; margin-left: .5ch; font: inherit; }
+body[data-page='info'] .toy::after { content: '[*]'; }
+body[data-page='info'] .place.is-hot .place__btn,
+body[data-page='info'] .place__btn[aria-expanded='true'] { background: #111; color: #fff; }
+body[data-page='info'] .place.is-hot,
+body[data-page='info'] .place.is-hot * { cursor: auto; }
+body[data-page='info'] .clockcur { display: none; }
+body[data-page='info'] .tick { padding: 0; background: transparent; }
+body[data-page='info'] .tick__card {
+  padding: 8px 10px; background: #fff; color: #111;
+  font: 400 15px/1.45 ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, 'Courier New', monospace;
+  -webkit-font-smoothing: antialiased; border: 1px solid #111;
+}
+body[data-page='info'] .tick__face { display: none; }
+body[data-page='info'] .tick__time,
+body[data-page='info'] .tick__sub { font: inherit; font-variant-numeric: tabular-nums; }
+
+/* ---------- full size: just the work, centered, big enough to read ---------- */
+
+.has-fit { overflow: hidden; }
+html.has-fit .sbar { z-index: 42; }
+.fit {
+  position: fixed; inset: 0; z-index: 36; background: var(--white); overflow: auto;
+  scrollbar-width: none; animation: fit-in .25s var(--ease);
+}
+.fit[hidden] { display: none; }
+.fit::-webkit-scrollbar { display: none; width: 0; height: 0; }
+@keyframes fit-in { from { opacity: 0; } }
+.fit__close { position: fixed; top: 14px; right: calc(14px + var(--sb-w, 0px)); z-index: 2; }
+.fit__col {
+  width: min(1120px, calc(100vw - 64px - var(--sb-w, 0px)));
+  margin-inline: auto; padding: 72px 0 18vh;
+  display: flex; flex-direction: column; align-items: center; gap: 36px;
+}
+.fit__col h2 {
+  width: 100%; font-size: 16px; font-weight: 400; line-height: normal; letter-spacing: normal;
+  text-transform: lowercase; text-align: center; text-wrap: balance;
+}
+.fit__frame { width: 100%; margin: 0; }
+.fit__frame img { width: 100%; height: auto; background: var(--mist); }
+.fit__frame figcaption { margin-top: 8px; }
+.fit__frame--empty {
+  width: min(100%, 520px); aspect-ratio: var(--ar); background: var(--box);
+  display: grid; place-items: end start; padding: 10px;
+}
+
+/* ---------- flip: the projects as a stack of windows, scrolled like Vista ---------- */
+
+.has-flip { overflow: hidden; }
+html.has-flip .sbar { visibility: hidden; }
+.flip {
+  position: fixed; inset: 0; z-index: 50; overflow: visible; overscroll-behavior: contain;
+  color: var(--ink);
+}
+.flip[hidden] { display: none; }
+/* Original green-and-gold field in the Flip 3D arrangement. Not Microsoft's wallpaper. */
+.flip__bg {
+  position: absolute; inset: 0; opacity: 0; pointer-events: none;
+  transition: opacity .72s cubic-bezier(.2, .75, .2, 1);
+  background:
+    radial-gradient(62% 48% at 86% 88%, #fff3c0 0%, #ffcc4a 20%, rgba(255, 170, 40, .4) 40%, transparent 64%),
+    radial-gradient(50% 60% at 0% 0%, #0c5c34 0%, transparent 58%),
+    radial-gradient(30% 40% at 30% 70%, rgba(170, 230, 80, .35), transparent 70%),
+    linear-gradient(168deg, #0c6234 0%, #17883e 30%, #4aa848 58%, #c4bc52 84%, #f0d56e 100%);
+}
+.flip__bg::before {
+  content: ''; position: absolute; inset: -20% -8%;
+  background:
+    linear-gradient(108deg, transparent 8%, rgba(255, 255, 255, .28) 18%, transparent 28%),
+    linear-gradient(108deg, transparent 36%, rgba(220, 255, 170, .24) 48%, transparent 58%),
+    linear-gradient(108deg, transparent 62%, rgba(255, 230, 140, .38) 74%, transparent 86%);
+}
+.flip__bg::after {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(75% 75% at 48% 42%, transparent 42%, rgba(0, 28, 8, .34) 100%);
+}
+.flip.is-on .flip__bg,
+.flip.is-on .flip__close { opacity: 1; }
+.flip__close { opacity: 0; transition: opacity .32s cubic-bezier(.16, .84, .32, 1); }
+.flip.is-on .flip__close { transition-delay: .12s; }
+.flip__close { position: absolute; top: 16px; right: 16px; z-index: 3; }
+.flip__stage {
+  position: absolute; inset: 0; z-index: 1;
+  perspective: 2000px; perspective-origin: 42% 38%;
+  touch-action: none;
+}
+.flip__deck {
+  position: absolute; left: 70%; top: 62%; width: 0; height: 0;
+  transform-style: preserve-3d;
+  /* Closed: flatter and further, so opening swings the stack up into its angle. */
+  transform: rotateX(-3deg) rotateY(12deg) translate3d(0, 40px, -640px);
+  transition: transform .72s cubic-bezier(.2, .75, .2, 1);
+}
+.flip.is-on .flip__deck {
+  transform: rotateX(var(--pitch, -10deg)) rotateY(var(--yaw, 34deg)) translate3d(0, 0, 0);
+}
+.flip__slot {
+  position: absolute; left: 0; top: 0;
+  width: var(--win-w, 720px); height: var(--win-h, 460px);
+  margin-left: calc(var(--win-w, 720px) / -2);
+  margin-top: calc(var(--win-h, 460px) / -2);
+  transform: translate3d(
+    calc(var(--d) * var(--step-x, 20px)),
+    calc(var(--d) * var(--step-y, -8px)),
+    calc(var(--d) * var(--step-z, -320px))
+  );
+}
+/* Frame is a real frosted-glass photo (rawpixel, CC0), not a painted gradient.
+   https://www.rawpixel.com/image/6170650 — the page content sits inside it. */
+.flip__win {
+  display: flex; flex-direction: column; width: 100%; height: 100%; padding: 0; text-align: left;
+  background: #e6eef3 url("/textures/flip-bar.jpg") top center / 100% 32px no-repeat;
+  overflow: hidden; opacity: var(--o, 1); border-radius: 8px;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, .55),
+    0 22px 46px rgba(0, 0, 0, .42);
+}
+.flip__win:focus-visible { outline-offset: 4px; }
+.flip__glass {
+  position: relative; z-index: 1; flex: none; display: flex; align-items: center; justify-content: space-between;
+  height: 32px; padding: 0 8px 0 12px; color: #10283a;
+  font-family: "Segoe UI", Candara, "Trebuchet MS", sans-serif; font-size: 13px; letter-spacing: .01em;
+  background: transparent;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, .65);
+}
+.flip__caption { min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; text-transform: lowercase; }
+.flip__aero { display: flex; gap: 4px; flex: none; }
+.flip__aero span {
+  width: 22px; height: 16px; border-radius: 3px;
+  background: rgba(255, 255, 255, .28);
+  box-shadow: inset 0 0 0 1px rgba(20, 50, 70, .45);
+}
+.flip__aero span:last-child { background: #c53632; box-shadow: inset 0 0 0 1px rgba(80, 16, 12, .55); }
+.flip__face {
+  position: absolute; top: 32px; bottom: 6px; overflow: hidden;
+  transform-origin: 0 0; pointer-events: none;
+}
+.flip__face .entry { margin: 0; }
+
+/* ---------- viewer: covers the right side, the monogram stays ---------- */
+
+.has-viewer { overflow: hidden; }
+.viewer { position: fixed; inset: 0 0 0 var(--stage); z-index: 30; background: var(--white); display: grid; grid-template-rows: auto 1fr; }
+.viewer[hidden] { display: none; }
+.viewer .bar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px var(--pad); padding: var(--gap) var(--gap) var(--gap) var(--pad); font: 16px/normal var(--sans); text-transform: lowercase; }
+.bar__group { display: flex; gap: 2px; }
+.viewer__body { min-height: 0; display: grid; place-items: center; padding: 2vh 5vw 6vh; width: 100%; }
+.viewer__body img { max-width: 100%; max-height: 100%; width: auto; height: auto; min-height: 0; object-fit: contain; animation: pop .35s var(--ease); }
+@keyframes pop { from { transform: scale(.92); opacity: 0; } }
+
+/* ---------- small screens: the monogram goes on top, the work below ---------- */
+
+@media (max-width: 900px) {
+  /* The monogram keeps the top quarter and stays put while the work scrolls under it. In svh, so it holds still
+     while the browser bars come and go. The game borrows more of the screen and hands it back on quit. */
+  :root { --stage: 0px; --strip: min(58svh, 480px); --top: 25svh; }
+  body { --deck: var(--top); }
+  body:has(.is-game) { --deck: 64svh; }
+  /* The same split as the desktop, turned on its side: who this is on one half, the monogram on the other. */
+  .stage {
+    inset: 0 0 auto; z-index: 26; width: auto; height: var(--deck);
+    grid-template-columns: max-content minmax(0, 1fr); transition: height .45s var(--ease);
+  }
+  .tabs { grid-area: 1 / 1 / 2 / -1; height: 40px; }
+  .tab, .tab:hover { flex-grow: 1; height: 40px; font-size: 16px; }
+  .stage__logo { grid-area: 2 / 2 / 4 / 3; margin-top: 0; }
+  .stage__foot { grid-area: 3 / 1; position: relative; flex-direction: column; align-items: flex-start; gap: 6px; padding: 0 0 12px var(--pad); }
+  body:has(.is-game) .stage__logo { grid-area: 2 / 1 / 3 / -1; }
+  body:has(.is-game) .stage__foot { grid-column: 1 / -1; flex-direction: row; align-items: flex-end; justify-content: space-between; padding: 10px var(--pad) 12px; }
+  /* The sticker is wider than "Toronto, ON". Anchored to that word it falls off the
+     left edge and lands on the name. Sit it in the open cell above the name instead. */
+  .place { position: static; }
+  .tick { left: var(--pad); right: auto; bottom: calc(100% + 10px); }
+  html.is-es .tick { left: auto; right: var(--pad); }
+  body:has(.is-game) .place { position: relative; }
+  body:has(.is-game) .tick { left: auto; right: 0; bottom: calc(100% + 26px); }
+  html.is-es body:has(.is-game) .tick { left: 0; right: auto; }
+  .clockcur { display: none; }
+  .place__btn { padding-block: 12px; margin-block: -12px; }
+  .toy { padding: 12px; margin: -12px -12px -12px -8px; }
+  .key { min-height: 40px; }
+  .panel { min-height: 0; padding-top: calc(var(--top) + 20px); }
+  .entry { scroll-margin-top: calc(var(--top) + 24px); }
+  .edges { top: var(--deck); left: 0; transition: top .45s var(--ease); }
+  html .sbar { top: var(--deck); transition: top .45s var(--ease); }
+  .entry { --note: calc(100cqi - 16px); }
+  .entry__bar { row-gap: 2px; padding: 12px 14px 10px; }
+  .entry__title { flex-basis: 100%; }
+  .entry .strip { min-height: min(52svh, 440px); }
+  .entry__note,
+  .entry .strip > .slide:first-child { width: calc(100% - 16px); }
+  .fit__col { width: min(1120px, calc(100vw - 32px - var(--sb-w, 0px))); padding-top: 68px; }
+  .entry__end { padding: 48px 20px; }
+  .info { padding: 8px 16px 64px; }
+  .info__row { grid-template-columns: 1fr; row-gap: .1em; min-height: 0; padding-block: 10px; }
+  /* The short split header is for the monogram. Info needs the whole width, in the page flow. */
+  body[data-page='info'] .stage {
+    position: relative; inset: auto; z-index: 1; height: auto;
+    grid-template-columns: 1fr;
+  }
+  body[data-page='info'] .tabs,
+  body[data-page='info'] .stage__logo,
+  body[data-page='info'] .stage__foot { grid-area: auto; }
+  body[data-page='info'] .stage__logo { height: 188px; }
+  body[data-page='info'] .stage__foot {
+    flex-direction: column; align-items: flex-start; gap: 4px; padding: 4px 16px 16px;
+  }
+  /* The monogram sits on top of this column, so the sticker stays in the row with Toronto. */
+  body[data-page='info'] .stage__foot > span { display: flex; flex-wrap: wrap; align-items: center; column-gap: 8px; }
+  body[data-page='info'] .place { display: contents; }
+  body[data-page='info'] .tick { position: static; flex: none; order: 1; }
+  body[data-page='info'] .toy { margin: 0 0 0 .5ch; padding: 0; }
+  body[data-page='info'] .panel { padding-top: 0; }
+  html:has(body[data-page='info']) .sbar { top: 0; }
+  .strip { padding-right: 12%; }
+  .slide figcaption { opacity: 1; transform: none; }
+}
+/* The top quarter is too short for a full sticker. Tuck it in so it still clears the tabs and the name. */
+@media (max-width: 900px) and (max-height: 740px) {
+  .tick { bottom: calc(100% + 4px); padding: 0; }
+  .tick__card { gap: 6px; padding: 3px 8px 3px 4px; }
+  .tick__face { width: 28px; height: 28px; }
+}
+
+/* Someone else on the page. playhtml draws them; the hand is the same one the site uses. */
+.playhtml-cursor-other {
+  width: auto !important; height: auto !important; z-index: 58 !important;
+  transition: none !important; transform-origin: 2px 0;
+}
+.guestcur { display: block; width: 36px; height: 37px; max-width: none; image-rendering: pixelated; pointer-events: none; }
+.playhtml-cursor-name {
+  top: 28px !important; left: 20px !important; padding: 0 6px !important; border-radius: 0 !important;
+  font: 400 16px/1.3 var(--sans) !important; background: var(--white) !important; color: var(--ink) !important;
+  border: 1px solid var(--ink) !important; box-shadow: 3px 3px 0 var(--cobalt) !important; opacity: 1 !important;
+}
+
+/* Leaky Ring flood sits over the portfolio; tuck it under the image viewer. */
+html.has-viewer #flood,
+html.has-viewer #flood-menu,
+html.has-fit #flood,
+html.has-fit #flood-menu,
+html.has-fit .slips,
+html.has-flip #flood,
+html.has-flip #flood-menu,
+html.has-flip .slips {
+  z-index: 20;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}

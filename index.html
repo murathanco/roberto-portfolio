@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <script>
+      (function () {
+        var skins = ['w95', 'wood', 'metal', 'stone', 'brick', 'grass', 'clover', 'water', 'sky', 'fire', 'candy', 'amethyst', 'rainbow'];
+        var key = 'rgs-bar';
+        var n = 0;
+        try { n = parseInt(localStorage.getItem(key) || '0', 10) || 0; } catch (e) {}
+        if (n < 0) n = 0;
+        var i = n % skins.length;
+        function show(k) {
+          i = ((k % skins.length) + skins.length) % skins.length;
+          document.documentElement.setAttribute('data-scroll', skins[i]);
+          try { localStorage.setItem(key, String(i + 1)); } catch (e) {}
+        }
+        show(i);
+        addEventListener('hashchange', function () { show(i + 1); });
+      })();
+    </script>
+    <title>Roberto Gonzalez Sosa — Your Sharp Associate</title>
+    <meta name="description" content="ROBERTO.GS is the creative practice of Roberto Gonzalez Sosa. Brand design, editorial, illustration and photography from Toronto, ON." />
+    <meta name="theme-color" content="#ffffff" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/src/style.css" />
+    <link rel="stylesheet" href="/src/scrollbar.css" />
+  </head>
+  <body>
+    <a class="skip" href="#content">Skip to content</a>
+
+    <!-- Left: who this is, how to get around, and the monogram. It reacts to whatever you point at on the right. -->
+    <aside class="stage" id="stage" aria-label="Roberto Gonzalez Sosa">
+      <nav class="tabs" aria-label="Site">
+        <a class="tab" href="#/" data-nav="work">work</a>
+        <a class="tab" href="#/info" data-nav="info">info</a>
+        <a class="tab" href="mailto:robertogonzalezsosa@gmail.com">contact</a>
+      </nav>
+
+      <div class="stage__logo" id="logo" aria-hidden="true"></div>
+
+      <footer class="stage__foot">
+        <a class="name" href="#/"><h1>Roberto Gonzalez Sosa</h1><span>Your Sharp Associate</span></a>
+        <span>
+          <span class="place">
+            <button class="place__btn" id="place" type="button" aria-expanded="false" aria-controls="tick">Toronto, ON</button>
+            <!-- clock.gif is clock-blue-0074.gif from Pixel Sea, melonking.net's icon pack. -->
+            <span class="tick" id="tick" hidden data-own>
+              <span class="tick__card">
+                <img class="tick__face" src="/icons/clock.gif" alt="" width="38" height="38" />
+                <span class="tick__read">
+                  <span class="tick__time" id="tick-time">––:––:––</span>
+                  <span class="tick__sub" id="tick-date"></span>
+                </span>
+              </span>
+            </span>
+          </span>
+          <button class="toy" id="toy" type="button" aria-pressed="false" aria-label="Play the game"><img class="doodle" src="/doodle.svg" alt="" width="16" height="20" /></button>
+        </span>
+      </footer>
+    </aside>
+
+    <!-- Right: a scrolling sheet of work, one project, or the info page. -->
+    <main class="panel" id="content" tabindex="-1"></main>
+
+    <!-- The works, framing the right half: top, outer side, and bottom. -->
+    <nav class="edges" aria-label="Projects">
+      <div class="edges__top"></div>
+      <div class="edges__side"></div>
+      <div class="edges__foot"></div>
+    </nav>
+
+    <!-- Full-size look at one project. window.gif is window-0001.gif from Pixel Sea, melonking.net's icon pack. -->
+    <div class="fit" id="fit" role="dialog" aria-modal="true" aria-labelledby="fit-title" hidden>
+      <header class="fit__bar">
+        <h2 class="fit__title" id="fit-title">Project</h2>
+        <p class="fit__meta" id="fit-meta"></p>
+        <button class="key fit__close" id="fit-close" type="button">
+          <img class="win" src="/icons/window.gif" alt="" width="32" height="32" />
+          close
+        </button>
+      </header>
+      <div class="fit__scroll" id="fit-scroll"></div>
+    </div>
+
+    <!-- Flip through every project, the way Vista stacks its windows. -->
+    <div class="flip" id="flip" role="dialog" aria-modal="true" aria-label="Projects" hidden>
+      <div class="flip__bg" aria-hidden="true"></div>
+      <button class="key flip__close" id="flip-close" type="button">
+        <svg class="flipico" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M3.2 3.2 12.8 12.8M12.8 3.2 3.2 12.8" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+        close
+      </button>
+      <div class="flip__stage">
+        <div class="flip__deck" id="flip-deck"></div>
+      </div>
+    </div>
+
+    <div class="sbar" id="sbar" hidden>
+      <button class="sbar__up" type="button" aria-label="Scroll up" tabindex="-1"></button>
+      <div class="sbar__track">
+        <div class="sbar__thumb" role="scrollbar" aria-orientation="vertical" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Page position" tabindex="-1"></div>
+      </div>
+      <button class="sbar__down" type="button" aria-label="Scroll down" tabindex="-1"></button>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+    <script type="module" src="/src/scrollbar.js"></script>
+    <script type="module" src="/src/mexico.js"></script>
+    <script type="module" src="/src/cursors.js"></script>
+    <script type="module" src="/src/rpg/ambush.js"></script>
+    <script type="module" src="/src/finds.js"></script>
+  </body>
+</html>

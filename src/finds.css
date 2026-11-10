@@ -1,0 +1,295 @@
+/* Achievements — Melonking-adjacent retro: TextureTown paper/plank/metal + Pixel Sea icons.
+   textures.neocities.org · pixelsea.neocities.org
+   Text sits on solid cream labels so the wood/paper grain stays decorative, not noisy. */
+
+.finds-open {
+  position: fixed; z-index: 68;
+  right: max(12px, env(safe-area-inset-right));
+  bottom: max(12px, env(safe-area-inset-bottom));
+  width: 44px; height: 44px; padding: 0;
+  border: 0; cursor: pointer;
+  background:
+    linear-gradient(rgb(0 0 0 / .18), rgb(0 0 0 / .18)),
+    url('/textures/finds/plank.jpg') center / cover;
+  box-shadow:
+    inset 1px 1px 0 rgb(255 230 190 / .35),
+    inset -2px -2px 0 rgb(40 18 6 / .55),
+    2px 2px 0 rgb(0 0 0 / .35);
+  image-rendering: pixelated;
+}
+.finds-open img { width: 28px; height: 28px; image-rendering: pixelated; }
+.finds-open:hover { filter: brightness(1.08); }
+.finds-open:active {
+  box-shadow:
+    inset -1px -1px 0 rgb(255 230 190 / .2),
+    inset 2px 2px 0 rgb(40 18 6 / .65);
+}
+
+.finds-toast {
+  position: fixed; z-index: 70;
+  right: max(14px, env(safe-area-inset-right));
+  bottom: max(62px, calc(env(safe-area-inset-bottom) + 56px));
+  display: flex; align-items: center; gap: 12px;
+  max-width: min(300px, calc(100vw - 28px));
+  padding: 10px 12px 10px 10px;
+  border: 0; text-align: left; cursor: pointer;
+  color: #1a120c;
+  font: 400 15px/1.3 "Times New Roman", Times, serif;
+  background: #f7f0de;
+  box-shadow:
+    inset 1px 1px 0 #fffaf0,
+    inset -2px -2px 0 #8a6a3a,
+    0 0 0 3px #5a3a1a,
+    0 0 0 5px #c4a06a,
+    3px 3px 0 rgb(0 0 0 / .35);
+  opacity: 0; transform: translateY(8px);
+  transition: opacity .22s ease, transform .22s ease;
+}
+.finds-toast.is-on { opacity: 1; transform: none; }
+.finds-toast[hidden] { display: none; }
+.finds-toast__ico {
+  flex: none; width: 36px; height: 36px;
+  image-rendering: pixelated;
+  background:
+    linear-gradient(rgb(0 0 0 / .12), rgb(0 0 0 / .12)),
+    url('/textures/finds/metal.jpg') center / cover;
+  box-shadow: inset 1px 1px 0 #ddd, inset -1px -1px 0 #333;
+  display: grid; place-items: center;
+}
+.finds-toast__ico img { width: 28px; height: 28px; image-rendering: pixelated; }
+.finds-toast__k {
+  display: block; color: #5a3a18; font-size: 12px;
+  letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 2px;
+}
+.finds-toast__n { display: block; font-weight: 700; color: #101012; font-size: 16px; }
+.finds-toast__go { display: block; color: #4a3418; margin-top: 3px; font-size: 13px; }
+.finds-toast:hover .finds-toast__go { color: #2f4bd8; text-decoration: underline; }
+
+.finds {
+  position: fixed; inset: 0; z-index: 85;
+  display: grid; place-items: center;
+  padding: max(12px, env(safe-area-inset-top)) 12px max(12px, env(safe-area-inset-bottom));
+  background:
+    linear-gradient(rgb(20 12 6 / .58), rgb(20 12 6 / .58)),
+    url('/textures/finds/leather.jpg') center / 180px;
+  opacity: 0; transition: opacity .2s ease;
+}
+.finds.is-on { opacity: 1; }
+.finds[hidden] { display: none; }
+
+.finds__case {
+  width: min(520px, 100%);
+  max-height: min(84vh, 720px);
+  display: flex; flex-direction: column;
+  padding: 10px;
+  background:
+    linear-gradient(rgb(40 22 10 / .35), rgb(40 22 10 / .35)),
+    url('/textures/finds/plank.jpg') center / 220px;
+  box-shadow:
+    inset 2px 2px 0 rgb(255 220 170 / .28),
+    inset -3px -3px 0 rgb(20 8 0 / .55),
+    0 8px 0 rgb(0 0 0 / .25);
+}
+
+.finds__titlebar {
+  display: flex; align-items: center; gap: 10px;
+  min-height: 32px; padding: 6px 8px;
+  color: #fff8e8;
+  font: 700 16px/1.1 "Times New Roman", Times, serif;
+  text-shadow: 0 1px 0 #1a0c04;
+  background:
+    linear-gradient(rgb(0 0 0 / .42), rgb(0 0 0 / .42)),
+    url('/textures/finds/metal.jpg') center / cover;
+  box-shadow: inset 1px 1px 0 #c8c0b0, inset -1px -1px 0 #2a2218;
+}
+.finds__titlebar img { width: 22px; height: 22px; image-rendering: pixelated; }
+.finds__title { flex: 1; margin: 0; font: inherit; letter-spacing: 0.01em; }
+.finds__count {
+  font-weight: 400; color: #f0e2c0;
+  font-variant-numeric: tabular-nums; font-size: 15px;
+}
+.finds__x {
+  width: 20px; height: 18px; padding: 0; border: 0; cursor: pointer;
+  background: #c0c0c0 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='7'%3E%3Cpath d='M0 0h2v1h1v1h2V1h1V0h2v1H7v1H6v1H5v1h1v1h1v1h1v1H6V6H5V5H3v1H2v1H0V6h1V5h1V4h1V3H2V2H1V1H0z'/%3E%3C/svg%3E") no-repeat 6px 5px;
+  box-shadow: inset -1px -1px #0a0a0a, inset 1px 1px #fff, inset -2px -2px #808080, inset 2px 2px #dfdfdf;
+}
+.finds__x:active {
+  background-position: 7px 6px;
+  box-shadow: inset -1px -1px #fff, inset 1px 1px #0a0a0a, inset -2px -2px #dfdfdf, inset 2px 2px #808080;
+}
+
+.finds__body {
+  flex: 1; min-height: 0;
+  display: flex; flex-direction: column;
+  margin-top: 8px;
+  padding: 12px 12px 10px;
+  overflow: hidden;
+  color: #101012;
+  background: #f7f0de;
+  box-shadow: inset 1px 1px 0 #fff, inset -2px -2px 0 #8a6a3a;
+}
+
+.finds__scroll {
+  flex: 1; min-height: 0;
+  display: flex; align-items: stretch; gap: 8px;
+}
+
+.finds__list {
+  flex: 1; min-width: 0; min-height: 0;
+  display: grid; gap: 6px;
+  margin: 0; padding: 0 0 4px;
+  list-style: none;
+  overflow: auto; overscroll-behavior: contain;
+  scrollbar-width: none;
+}
+.finds__list::-webkit-scrollbar { display: none; width: 0; height: 0; }
+
+/* Stone channel, oak grip, iron caps. Same textures as the case. */
+.finds__sbar {
+  flex: none; width: 20px;
+  display: flex; flex-direction: column;
+  user-select: none; touch-action: none;
+  box-shadow: 0 0 0 1px #3a2410;
+}
+.finds__sbar[hidden] { display: none; }
+.finds__up, .finds__down {
+  flex: none; width: 100%; height: 20px; padding: 0; border: 0; cursor: pointer;
+  background-repeat: no-repeat, no-repeat;
+  background-size: 11px 8px, cover;
+  background-position: center, center;
+  box-shadow: inset 1px 1px 0 #d4c0a0, inset -1px -1px 0 #241408;
+}
+.finds__up { background-image: url('/scrollbar/tex-up.svg'), url('/textures/finds/metal.jpg'); }
+.finds__down { background-image: url('/scrollbar/tex-down.svg'), url('/textures/finds/metal.jpg'); }
+.finds__up:hover, .finds__down:hover { filter: brightness(1.12); }
+.finds__up:active, .finds__down:active {
+  background-position: center calc(50% + 1px), center;
+  box-shadow: inset 1px 1px 0 #241408, inset -1px -1px 0 #d4c0a0;
+}
+.finds__track {
+  position: relative; flex: 1; min-height: 0;
+  background:
+    linear-gradient(rgb(28 12 6 / .42), rgb(28 12 6 / .42)),
+    url('/textures/stone.jpg') center / 48px;
+  box-shadow:
+    inset 2px 2px 4px rgb(0 0 0 / .72),
+    inset -1px -1px 0 rgb(255 214 160 / .16);
+}
+.finds__thumb {
+  position: absolute; left: 2px; right: 2px; min-height: 40px; cursor: grab;
+  background:
+    linear-gradient(rgb(255 236 170 / .35), rgb(120 60 0 / .25)) top / 100% 6px no-repeat,
+    linear-gradient(rgb(40 16 0 / .45), rgb(0 0 0 / .35)) bottom / 100% 6px no-repeat,
+    url('/textures/gold.jpg') top / 56px 6px no-repeat,
+    url('/textures/gold.jpg') bottom / 56px 6px no-repeat,
+    linear-gradient(90deg, rgb(42 18 4 / .5), transparent 26%, transparent 74%, rgb(20 8 2 / .55)),
+    linear-gradient(rgb(120 70 24 / .16), rgb(120 70 24 / .16)),
+    url('/textures/finds/ashwood.jpg') center / 64px;
+  box-shadow:
+    inset 1px 0 0 rgb(255 236 200 / .7),
+    inset -1px 0 0 rgb(30 12 2 / .85),
+    0 1px 0 rgb(20 8 0 / .35);
+}
+.finds__thumb.is-drag { cursor: grabbing; }
+.finds__thumb.is-drag,
+.finds__thumb:active {
+  box-shadow:
+    inset 2px 2px 5px rgb(20 8 0 / .55),
+    inset -1px 0 0 rgb(255 228 180 / .35);
+}
+.finds__thumb:focus-visible {
+  outline: 1px solid #f0d090;
+  outline-offset: -4px;
+}
+.finds__thumb::after {
+  content: '';
+  position: absolute; left: 3px; right: 3px; top: 50%; height: 16px;
+  transform: translateY(-50%);
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0 2px,
+    rgb(255 232 190 / .9) 2px 3px,
+    rgb(36 14 4 / .95) 3px 5px,
+    transparent 5px 8px
+  );
+  pointer-events: none;
+}
+
+.finds__row {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  gap: 10px;
+  align-items: center;
+  padding: 8px 10px;
+  background: #fffaf0;
+  border: 1px solid #c4a06a;
+  box-shadow: inset 1px 1px 0 #fff, 1px 1px 0 #e8d8b8;
+  font: 400 15px/1.3 "Times New Roman", Times, serif;
+  color: #101012;
+}
+.finds__row.is-out {
+  background: #ebe3d0;
+  color: #4a4034;
+  border-color: #b8a078;
+}
+.finds__badge {
+  width: 40px; height: 40px;
+  display: grid; place-items: center;
+  background:
+    linear-gradient(rgb(0 0 0 / .18), rgb(0 0 0 / .18)),
+    url('/textures/finds/metal.jpg') center / cover;
+  box-shadow: inset 1px 1px 0 #ccc, inset -2px -2px 0 #333;
+}
+.finds__badge img {
+  width: 32px; height: 32px;
+  image-rendering: pixelated;
+}
+.finds__row.is-out .finds__badge img {
+  filter: grayscale(1) brightness(0.6) contrast(0.95);
+  opacity: .9;
+}
+.finds__copy { min-width: 0; display: grid; gap: 2px; }
+.finds__name {
+  font-weight: 700;
+  font-size: 16px;
+  color: #101012;
+}
+.finds__row.is-out .finds__name { color: #3a3228; font-weight: 600; }
+.finds__hint {
+  color: #4a3418;
+  font-size: 14px;
+  line-height: 1.35;
+}
+.finds__row.is-out .finds__hint { color: #5a4a38; }
+.finds__row.is-on .finds__hint { color: #2f6b3a; }
+
+.finds__credit {
+  margin: 10px 2px 0;
+  font: 400 13px/1.35 "Times New Roman", Times, serif;
+  color: #4a3418;
+}
+.finds__credit summary {
+  width: fit-content;
+  cursor: pointer;
+  list-style: none;
+  color: #3a2814;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.finds__credit summary::-webkit-details-marker { display: none; }
+.finds__credit summary:hover { color: #2f4bd8; }
+.finds__credit[open] summary { margin-bottom: 4px; }
+.finds__credit p { margin: 0; color: #4a3418; }
+.finds__credit a {
+  color: #2a1a0c;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.finds__credit a:hover { color: #2f4bd8; }
+
+@media (prefers-reduced-motion: reduce) {
+  .finds, .finds-toast { transition: none; }
+}
+
+html.amb-lock .finds-open,
+html.amb-lock .finds-toast { display: none !important; }
