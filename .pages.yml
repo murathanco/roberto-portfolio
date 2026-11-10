@@ -3,7 +3,7 @@
 media:
   input: public/work
   output: /work
-  categories: [image]
+  extensions: [jpg, jpeg, png, gif, webp]
   rename: safe
 
 settings:
@@ -140,31 +140,36 @@ content:
             type: text
             list: true
           - name: slides
-            label: Slides
+            label: Photos
             type: object
+            description: Add one for each picture. Upload it, or pick one already in the project. The preview shows here, and the order here is the order on the site. The first photo is the cover.
             list:
               collapsible:
-                collapsed: true
+                collapsed: false
                 summary: "{caption}{placeholder}"
             fields:
               - name: src
-                label: Image
+                label: Photo
                 type: image
-              - name: alt
-                label: Description
-                type: string
-                description: What the image shows, for someone who cannot see it.
+                description: The preview appears as soon as the photo is chosen.
+                options:
+                  extensions: [jpg, jpeg, png, gif, webp]
               - name: caption
                 label: Caption
                 type: string
+              - name: alt
+                label: Description
+                type: string
+                description: What the photo shows, for someone who cannot see it.
               - name: placeholder
                 label: Coming soon label
                 type: string
-                description: Used when this slide has no image yet.
+                description: Leave the photo empty and write a label to hold the spot.
               - name: w
                 label: Width
                 type: number
-                description: In pixels. Leave blank for a 4:5 frame.
+                hidden: true
               - name: h
                 label: Height
                 type: number
+                hidden: true
