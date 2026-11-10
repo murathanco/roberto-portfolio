@@ -58,6 +58,17 @@ content:
               - name: studioAddress
                 label: Studio address
                 type: string
+              - name: es
+                label: Spanish
+                type: object
+                description: Shown when the site is in Spanish. Leave a line blank to keep the English.
+                fields:
+                  - name: tagline
+                    label: Tagline
+                    type: string
+                  - name: city
+                    label: City
+                    type: string
           - name: info
             label: Info page
             type: object
@@ -76,6 +87,25 @@ content:
                 label: Footer lines
                 type: string
                 list: true
+              - name: es
+                label: Spanish
+                type: object
+                description: The info page in Spanish. Leave a line blank to keep the English.
+                fields:
+                  - name: leads
+                    label: Opening lines
+                    type: text
+                    list: true
+                  - name: where
+                    label: Line above the studio
+                    type: text
+                  - name: reach
+                    label: Line above the email
+                    type: string
+                  - name: footer
+                    label: Footer lines
+                    type: string
+                    list: true
       - name: works
         label: Works
         type: collection
@@ -139,6 +169,30 @@ content:
             label: Paragraphs
             type: text
             list: true
+          - name: es
+            label: Spanish
+            type: object
+            description: This work in Spanish. Leave a field blank to keep the English.
+            fields:
+              - name: title
+                label: Title
+                type: string
+              - name: year
+                label: Year
+                type: string
+              - name: client
+                label: Client
+                type: string
+              - name: place
+                label: Place
+                type: string
+              - name: disciplines
+                label: Disciplines
+                type: string
+              - name: text
+                label: Paragraphs
+                type: text
+                list: true
           - name: slides
             label: Photos
             type: object
@@ -165,6 +219,20 @@ content:
                 label: Coming soon label
                 type: string
                 description: Leave the photo empty and write a label to hold the spot.
+              - name: es
+                label: Spanish
+                type: object
+                description: Leave a field blank to keep the English.
+                fields:
+                  - name: caption
+                    label: Caption
+                    type: string
+                  - name: alt
+                    label: Description
+                    type: string
+                  - name: placeholder
+                    label: Coming soon label
+                    type: string
               - name: w
                 label: Width
                 type: number

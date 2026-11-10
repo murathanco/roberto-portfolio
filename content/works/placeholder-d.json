@@ -32,5 +32,15 @@
     }
   ],
   "order": 5,
-  "hidden": false
+  "hidden": false,
+  "es": {
+    "title": "Provisional",
+    "year": "Año",
+    "client": "Cliente",
+    "place": "Lugar",
+    "disciplines": "Disciplina",
+    "text": [
+      "Aquí van unas líneas sobre el proyecto: qué fue, para quién fue y qué se hizo."
+    ]
+  }
 }

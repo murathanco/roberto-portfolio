@@ -6,7 +6,11 @@
     "email": "robertogonzalezsosa@gmail.com",
     "instagram": "roberto_gs",
     "studioName": "MACEL Studios",
-    "studioAddress": "658 Queen St W, Toronto, ON M6J 1E5"
+    "studioAddress": "658 Queen St W, Toronto, ON M6J 1E5",
+    "es": {
+      "tagline": "Tu Socio Avispado",
+      "city": "Toronto, ON"
+    }
   },
   "info": {
     "leads": [
@@ -20,6 +24,20 @@
       "Website brought to life by Murathan Biliktu",
       "Written in ABC Areal",
       "2026 (tm)"
-    ]
+    ],
+    "es": {
+      "leads": [
+        "¡Hola!",
+        "ROBERTO.GS es mi práctica creativa.",
+        "Viviendo con todo el corazón haciendo cosas."
+      ],
+      "where": "Residiendo en paz en Toronto, ON. Trabajando desde MACEL Studios en",
+      "reach": "Me encuentras en",
+      "footer": [
+        "Sitio web al que le dio vida Murathan Biliktu",
+        "Escrito en ABC Areal",
+        "2026 (tm)"
+      ]
+    }
   }
 }

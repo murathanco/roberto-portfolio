@@ -17,39 +17,76 @@
       "w": 1553,
       "h": 2400,
       "caption": "Poster",
-      "alt": "Dress Loud poster: four illustrated kids climbing over each other on a pink-to-violet gradient, with the headline “A month for self-expression and social inclusion for deaf and hard of hearing kids”."
+      "alt": "Dress Loud poster: four illustrated kids climbing over each other on a pink-to-violet gradient, with the headline “A month for self-expression and social inclusion for deaf and hard of hearing kids”.",
+      "es": {
+        "caption": "Póster",
+        "alt": "Póster de Dress Loud: cuatro niños ilustrados trepando unos sobre otros en un degradado de rosa a violeta, con el titular “Un mes de autoexpresión e inclusión social para niños sordos y con hipoacusia”."
+      }
     },
     {
       "src": "/work/dress-loud/02-headline.jpg",
       "w": 2000,
       "h": 1535,
       "caption": "Headline, detail",
-      "alt": "Detail of the poster headline, bold sans mixed with an italic serif."
+      "alt": "Detail of the poster headline, bold sans mixed with an italic serif.",
+      "es": {
+        "caption": "Titular, detalle",
+        "alt": "Detalle del titular del póster: una sans gruesa mezclada con una serif itálica."
+      }
     },
     {
       "src": "/work/dress-loud/03-figures.jpg",
       "w": 1600,
       "h": 2311,
       "caption": "Illustration, detail",
-      "alt": "Detail of the illustrated figures: a kid in a power wheelchair pointing ahead, another in a red turban."
+      "alt": "Detail of the illustrated figures: a kid in a power wheelchair pointing ahead, another in a red turban.",
+      "es": {
+        "caption": "Ilustración, detalle",
+        "alt": "Detalle de las figuras ilustradas: un niño en silla de ruedas eléctrica señalando al frente, otro con un turbante rojo."
+      }
     },
     {
       "src": "/work/dress-loud/04-logotype.jpg",
       "w": 1900,
       "h": 1450,
       "caption": "Logotype",
-      "alt": "Detail of the Dress Loud! logotype in navy with a gradient second line."
+      "alt": "Detail of the Dress Loud! logotype in navy with a gradient second line.",
+      "es": {
+        "caption": "Logotipo",
+        "alt": "Detalle del logotipo de Dress Loud! en azul marino con una segunda línea en degradado."
+      }
     },
     {
-      "placeholder": "Photography"
+      "placeholder": "Photography",
+      "es": {
+        "placeholder": "Fotografía"
+      }
     },
     {
-      "placeholder": "Banners & badges"
+      "placeholder": "Banners & badges",
+      "es": {
+        "placeholder": "Pancartas e insignias"
+      }
     },
     {
-      "placeholder": "Presentation"
+      "placeholder": "Presentation",
+      "es": {
+        "placeholder": "Presentación"
+      }
     }
   ],
   "order": 3,
-  "hidden": false
+  "hidden": false,
+  "es": {
+    "title": "Dress Loud",
+    "year": "2025",
+    "client": "Voice for Deaf Kids",
+    "place": "Toronto, ON",
+    "disciplines": "Diseño de marca, Editorial, Ilustración, Fotografía, Oratoria",
+    "text": [
+      "El mayo pasado tuve la oportunidad de ser voluntario en #DressLoud, un evento organizado por @voice4deafkids que crea conciencia sobre las niñas y los niños Sordos o con hipoacusia.",
+      "Este proyecto fue inmensamente divertido, gratificante, retador y aterrador, todo al mismo tiempo. Fue la primera vez que pude llamarme diseñador gráfico en el mundo real, y la primera vez que no tuve miedo de estar contento con lo que estaba haciendo. Me tocó crear una imagen y un lenguaje para el evento desde cero, así que tuvimos mucho margen para llevarlo a donde quisiéramos.",
+      "¡Esto es lo que hice! Ilustraciones originales (coloreadas por la maravillosa @poofy_itsme), fotografías, pósters, pancartas, insignias y presentaciones, todo hecho por su servidor. Todo con una imagen nueva que siento que captura el significado de Dress Loud: ser audaz y abrazar los colores de un mundo único. He aprendido muchísimo siendo la mitad de una pareja con capacidades distintas, así que correr la voz desde esta plataforma se sintió personal e importante."
+    ]
+  }
 }
